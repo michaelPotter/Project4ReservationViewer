@@ -42,7 +42,8 @@ public class ReservationGUI extends JFrame {
     private JMenuBar menuBar;
     private JMenu file;
     private JMenuItem load;
-    private JComboBox cardComboBox;
+//    private JComboBox cardComboBox;
+    private JButton cardButton;
     //card panels
     private JPanel controlPanel;
     private JPanel comboPanel;
@@ -113,10 +114,17 @@ public class ReservationGUI extends JFrame {
                     System.out.println(nameArray);
                 }
                 //If user selects the cardComboBox
-                if(event.getSource() == cardComboBox)
+//                if(event.getSource() == cardComboBox)
+//                {
+//                    CardLayout c1 = (CardLayout) cardLayoutPanel.getLayout();
+//                    c1.show(cardLayoutPanel, cardComboBox.getSelectedItem().toString());
+//                }
+                // If user presses the cardButton
+                if (event.getSource() == cardButton) 
                 {
                     CardLayout c1 = (CardLayout) cardLayoutPanel.getLayout();
-                    c1.show(cardLayoutPanel, cardComboBox.getSelectedItem().toString());
+                    c1.next(cardLayoutPanel);
+                    
                 }
                 //If user searches
                 if(event.getSource() == searchJButton)
@@ -187,11 +195,15 @@ public class ReservationGUI extends JFrame {
     {
         comboPanel = new JPanel();
         String comboItems[] = {"Search","Reservations"};
-        cardComboBox = new JComboBox(comboItems);
-        cardComboBox.setEditable(false);
+//        cardComboBox = new JComboBox(comboItems);
+//        cardComboBox.setEditable(false);
         //add an item listener
-        cardComboBox.addActionListener(listener);
-        comboPanel.add(cardComboBox);
+//        cardComboBox.addActionListener(listener);
+//        comboPanel.add(cardComboBox);
+        
+        cardButton = new JButton("switch");
+        cardButton.addActionListener(listener);
+        comboPanel.add(cardButton);
         //add panel to frame 
         add(comboPanel);
     }
