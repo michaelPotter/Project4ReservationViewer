@@ -124,6 +124,10 @@ public class ReservationGUI extends JFrame {
                 {
                     CardLayout c1 = (CardLayout) cardLayoutPanel.getLayout();
                     c1.next(cardLayoutPanel);
+                    if (cardButton.getText().equals("See Reservations")) 
+                        cardButton.setText("New Search");
+                    else
+                        cardButton.setText("See Reservations");
                     
                 }
                 //If user searches
@@ -201,7 +205,7 @@ public class ReservationGUI extends JFrame {
 //        cardComboBox.addActionListener(listener);
 //        comboPanel.add(cardComboBox);
         
-        cardButton = new JButton("switch");
+        cardButton = new JButton("See Reservations");
         cardButton.addActionListener(listener);
         comboPanel.add(cardButton);
         //add panel to frame 
