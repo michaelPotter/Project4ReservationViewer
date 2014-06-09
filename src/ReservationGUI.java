@@ -16,6 +16,7 @@ import reservationViewerLogic.*;
 import hotelBooking.FileSort;
 import java.io.*;
 import Calendar.*;
+import java.util.prefs.Preferences;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -42,9 +43,13 @@ public class ReservationGUI extends JFrame {
     private String[] nameArray;
     
     //menu bar
+    private String defaultFileName = "Reservations.dat";
+    private File defaultFileObject;
+    private File fileObject;
     private JMenuBar menuBar;
     private JMenu file;
     private JMenuItem load;
+    private JMenuItem setDefault; 
 //    private JComboBox cardComboBox;
     private JButton cardButton;
     //card panels
@@ -64,6 +69,7 @@ public class ReservationGUI extends JFrame {
     private JPanel title;
     private JPanel search;
     private JPanel buttonPanel;
+    private JLabel databaseName;
     
     //search card
     private JLabel reservationJLabel;
@@ -81,6 +87,9 @@ public class ReservationGUI extends JFrame {
     private JTextArea reservationTextArea;
     private JList reservationJList;
     
+    //added preference var
+    private Preferences prefs; 
+    
     //listener
     private ActionListener listener; // for everything in the club!
     private ListSelectionListener listListener; // because JList needs a special 
@@ -93,6 +102,20 @@ public class ReservationGUI extends JFrame {
      */
     public ReservationGUI()
     {
+        prefs = Preferences.userRoot().node(this.getClass().getName());
+        defaultFileObject = new File("Reservations.dat");
+        fileObject = null; 
+        fileObject = new File(prefs.get("LAST_FILE", ""));
+        
+        if(!(defaultFileObject.exists()))
+        {
+            JOptionPane.showMessageDialog(null, "No default database.");
+        }
+        
+        if(defaultFileObject.exists() && !(fileObject.exists()))
+        {
+            fileObject = new File(defaultFileObject.getName());
+        }
         
         
         /**
@@ -100,22 +123,65 @@ public class ReservationGUI extends JFrame {
          */
         class UserSelection implements ActionListener
         {
+            @Override
             public void actionPerformed(ActionEvent event)
             {
                 //If user selection is load menu item
                 if(event.getSource() == load) //JMenu Item
                 {
-                    System.out.println("Menu");
-                    File database = Viewer.pickFile();
-                    reservationArray = Viewer.readDatabase(database);
-                    nameArray = Viewer.getNames(reservationArray); //new String[reservationArray.length];
-//                    for (int i = 0; i < reservationArray.length; i++) 
-//                    {
-//                        nameArray[i] = reservationArray[i].getName();
-//                    }
-                    reservationJList.setListData(nameArray);
-                    System.out.println(nameArray);
+                    
+                    JFileChooser chooser = new JFileChooser();
+                    chooser.setCurrentDirectory(fileObject.getAbsoluteFile()
+                        .getParentFile());
+                    int returnVal = chooser.showOpenDialog(null);
+
+                    if (returnVal == JFileChooser.APPROVE_OPTION) 
+                    {
+                        fileObject = chooser.getSelectedFile();
+                        defaultFileName = fileObject.getName().trim();
+                    }
+                    
+                    databaseName.setText("Database: " + fileObject.getName());
+                    
+                    
+//                    System.out.println("Menu");
+//                    File database = Viewer.pickFile();
+//                    reservationArray = Viewer.readDatabase(database);
+//                    nameArray = Viewer.getNames(reservationArray); //new String[reservationArray.length];
+////                    for (int i = 0; i < reservationArray.length; i++) 
+////                    {
+////                        nameArray[i] = reservationArray[i].getName();
+////                    }
+//                    reservationJList.setListData(nameArray);
+//                    System.out.println(nameArray);
                 }
+                
+                if(event.getSource() == setDefault)
+                {
+                    JFileChooser fileChooser = new JFileChooser();
+                    fileChooser.setCurrentDirectory(fileObject.getAbsoluteFile()
+                        .getParentFile());
+                    int returnVal = fileChooser.showOpenDialog(null);
+
+                    if (returnVal == JFileChooser.APPROVE_OPTION) 
+                    {
+                        defaultFileName = fileChooser.getSelectedFile().getName();
+                        prefs.put("LAST_FILE", defaultFileName);
+                    }
+                    
+                    if (returnVal == JFileChooser.CANCEL_OPTION)
+                    {
+                        return;
+                    }
+                    
+                    databaseName.setText("Database: " + defaultFileName);
+                    
+                    
+                    fileObject = new File(defaultFileName);
+                    
+                }
+                
+                
                 //If user selects the cardComboBox
 //                if(event.getSource() == cardComboBox)
 //                {
@@ -191,15 +257,26 @@ public class ReservationGUI extends JFrame {
      */
     private void createMenuBar()
     {
+//        menuBar = new JMenuBar();
+//        file = new JMenu("File");
+//        file.setMnemonic(KeyEvent.VK_F);
+//        load = new JMenuItem("Load Database");
+//        load.addActionListener(listener);
+//        file.add(load);
+//        menuBar.add(file);
+//        setJMenuBar(menuBar);
+        
         menuBar = new JMenuBar();
         file = new JMenu("File");
         file.setMnemonic(KeyEvent.VK_F);
         load = new JMenuItem("Load Database");
-        load.addActionListener(listener);
+        setDefault = new JMenuItem("Set default Database");
         file.add(load);
+        file.add(setDefault);
         menuBar.add(file);
         setJMenuBar(menuBar);
-        
+        load.addActionListener(listener);
+        setDefault.addActionListener(listener);
     }
     /**
      * Create the card combobox for switching between cards of the form
@@ -213,6 +290,13 @@ public class ReservationGUI extends JFrame {
         //add an item listener
 //        cardComboBox.addActionListener(listener);
 //        comboPanel.add(cardComboBox);
+        
+        if(fileObject.exists())
+        {
+            databaseName = new JLabel("Database: " + fileObject.getName());
+        }
+        else
+            databaseName = new JLabel("Database: No Database");
         
         cardButton = new JButton("See Reservations");
         cardButton.addActionListener(listener);
