@@ -14,11 +14,20 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * A Command line version of the search program. Should include methods that
- * will be useable in the gui version of the program
+ * This class contains the logic behind the gui reservation viewer program.
+ * Should include methods that will be useable in the gui version of 
+ * the program such as methods to read from a database and/or process the 
+ * information obtained there. The main method of this class contains a 
+ * command line version of this program, however, it is no longer up to date.
  * @author Michael
  */
 public class Viewer {
+    /**
+     * NO LONGER CURRENT
+     * A command line version of the search program. Should work similaraly to 
+     * the gui format
+     * @param args 
+     */
 	public static void main(String[] args) {
 		boolean containSearch = false;
 
@@ -38,6 +47,17 @@ public class Viewer {
 		}
 	}
 
+    // This method will probably not be used since it makes more sense to 
+    // read the database once, create a Reservation[] and search from that.
+    /**
+     * Given a database and a searchTerm, this method will return the search 
+     * results. This method will utilize the Search Class so that it does not 
+     * need to be called directly. 
+     * @param database the database file to search through
+     * @param searchTerm the name of the reservation to search for
+     * @param containSearch whether to search in whole or containing 
+     * @return an array of reservations that met the search parameters
+     */
 	public static Reservation[] findReservations(File database,
 			String searchTerm, boolean containSearch) {
 		Reservation[] allReservations = readDatabase(database);
@@ -75,6 +95,11 @@ public class Viewer {
 		return searchResultsArray;
 	}
 
+    /**
+     * Reads a database of Reservations. 
+     * @param database the file containing the object data
+     * @return the list of reservations read from the file
+     */
 	public static Reservation[] readDatabase(File database) {
 		if (database.exists() && database.canRead()) {
 			FileInputStream fileInputStream = null;
@@ -109,6 +134,12 @@ public class Viewer {
 			return null;
 	}
 
+    /**
+     * Returns an array of Strings containing the names of Reservations in the 
+     * given array
+     * @param array the array of names
+     * @return the array to read from
+     */
 	public static String[] getNames(Reservation[] array) {
 		ArrayList<String> listOfNames = new ArrayList<String>();
 		for (Reservation reservation : array) {
@@ -119,11 +150,25 @@ public class Viewer {
 
 	}
     
+    /**
+     * Shows a fileChooser and returns the file selected by the user. This 
+     * method is just a redirection of the FileSort.pickFile(), but this is 
+     * done to simplify method calls so that all of the program logic is called 
+     * from a dedicated logic class
+     * @return The file chosen by the user
+     */
     public static File pickFile() {
                File database = FileSort.pickFile();
                return database;
 }
     
+    // This method may be incorrect or no longer necessary
+    
+    /**
+     * Searches for a default database in the directory from which the program 
+     * is run
+     * @return the file found to be a "default" database 
+     */
     public static File findDefaultDatabase() {
         File defaultDatabase = new File("Reservations.dat");
         if (defaultDatabase.exists() && defaultDatabase.canRead())
