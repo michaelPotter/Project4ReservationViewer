@@ -312,6 +312,7 @@ public class ReservationGUI extends JFrame {
         cardButton = new JButton("See Reservations");
         cardButton.addActionListener(listener);
         comboPanel.add(cardButton);
+        comboPanel.add(databaseName);
         //add panel to frame 
         add(comboPanel);
     }
