@@ -14,7 +14,17 @@ import java.util.Arrays;
  */
 public class BinarySearch
 {
-
+    public static void main(String[] args) {
+        String[] array = {"Alpha", "Alpha", "Alpha","Alpha","Bravo", "Bravo", "Bravo", "Charlie", "Delta"};
+        
+        int location = search(array, "Charlie");
+        System.out.println("Location: " + location);
+        
+        Integer[] locations = searchForAll(array, "Alpha");
+        for (int i : locations) {
+            System.out.print(i + ", ");
+        }
+    }
     /**
      * A static version of the binarySearch. Allows searching without creating a
      * BinarySearch Object.
@@ -30,6 +40,13 @@ public class BinarySearch
 
     }
     
+    /**
+     * Searches for all matches of a given search. By comparing to a given 
+     * object
+     * @param array the array to search through
+     * @param searchObject the searchObject to compare to
+     * @return an array containing all of the found matches
+     */
     public static Integer[] searchForAll(Comparable[] array, Comparable searchObject) 
     {
         int generalLocation = search(array, searchObject);
@@ -76,19 +93,31 @@ public class BinarySearch
         return searchFor(array, searchObject, startIndex, endIndex);
     }
 
+    /**
+     * Given a general location, this method will search for all objects 
+     * that are the same as the searched for object and are next to the general
+     * location in the array.
+     * @param array the array to search through
+     * @param searchObject the object to search for
+     * @param index the general location of the search
+     * @return an array containing all of the found matches
+     */
     private static Integer[] findNear(Comparable[] array, Comparable searchObject,
             int index)
     {
         ArrayList<Integer> indexList = new ArrayList<Integer>();
         for (int i = 0; i < 2; i++)
         {
-            int j = index + i;
+            int j = index - i;
             boolean stillSearching = true;
 
             while (stillSearching)
             {
                 if (array[j].equals(searchObject))
                 {
+                    
+                    if (j == 0 || j == array.length)
+                        stillSearching = false;
                     indexList.add(j);
                     if (i == 0)
                         j++;
