@@ -231,7 +231,12 @@ public class ReservationGUI extends JFrame {
             {
                 int index = reservationJList.getSelectedIndex();
                 Reservation outputReservation = reservationArray[index];
-                System.out.println(outputReservation);
+                // Each name on the left will probably represent several
+                // reservations (what if one person has multiple?) so when
+                // that name is clicked, all of the reservations should show
+                // up on the right
+                String output = outputReservation.toString();
+                reservationTextArea.setText(output);
             }
             
         }
