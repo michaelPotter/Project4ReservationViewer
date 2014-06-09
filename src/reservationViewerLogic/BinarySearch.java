@@ -30,7 +30,7 @@ public class BinarySearch
 
     }
     
-    public static Integer[] searchAll(Comparable[] array, Comparable searchObject) 
+    public static Integer[] searchForAll(Comparable[] array, Comparable searchObject) 
     {
         int generalLocation = search(array, searchObject);
         return findNear(array, searchObject, generalLocation);
