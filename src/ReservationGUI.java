@@ -32,8 +32,11 @@ public class ReservationGUI extends JFrame {
     
     private static JFrame reservationFrame;
     
-    // Array of Reservations
+    // Array of All Reservations
     private Reservation[] reservationArray;
+    
+    // Array of reservations meeting search Results
+    private Reservation[] searchedReservations;
     
     // Array of all Reservation names
     private String[] nameArray;
@@ -105,11 +108,11 @@ public class ReservationGUI extends JFrame {
                     System.out.println("Menu");
                     File database = Viewer.pickFile();
                     reservationArray = Viewer.readDatabase(database);
-                    nameArray = new String[reservationArray.length];
-                    for (int i = 0; i < reservationArray.length; i++) 
-                    {
-                        nameArray[i] = reservationArray[i].getName();
-                    }
+                    nameArray = Viewer.getNames(reservationArray); //new String[reservationArray.length];
+//                    for (int i = 0; i < reservationArray.length; i++) 
+//                    {
+//                        nameArray[i] = reservationArray[i].getName();
+//                    }
                     reservationJList.setListData(nameArray);
                     System.out.println(nameArray);
                 }
@@ -157,6 +160,12 @@ public class ReservationGUI extends JFrame {
             
         }
         
+        File database = Viewer.findDefaultDatabase();
+        if (database != null) {
+            reservationArray = Viewer.readDatabase(database);
+            nameArray = Viewer.getNames(reservationArray);
+            reservationJList.setListData(nameArray);
+        }
         listener = new UserSelection();
         listListener = new ListListener();
         createCardLayout();

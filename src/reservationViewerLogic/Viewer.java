@@ -123,4 +123,12 @@ public class Viewer {
                File database = FileSort.pickFile();
                return database;
 }
+    
+    public static File findDefaultDatabase() {
+        File defaultDatabase = new File("Reservations.dat");
+        if (defaultDatabase.exists() && defaultDatabase.canRead())
+            return defaultDatabase;
+        else 
+            return null;
+    }
 }
