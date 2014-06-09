@@ -236,6 +236,13 @@ public class ReservationGUI extends JFrame {
             
         }
         
+        
+        // create Listeners
+        listener = new UserSelection();
+        listListener = new ListListener();
+        createCardLayout();
+        
+        
         // Check for default database
         File database = Viewer.findDefaultDatabase();
         if (database != null) {
@@ -243,11 +250,6 @@ public class ReservationGUI extends JFrame {
             nameArray = Viewer.getNames(reservationArray);
             reservationJList.setListData(nameArray);
         }
-        
-        // create Listeners
-        listener = new UserSelection();
-        listListener = new ListListener();
-        createCardLayout();
     }
     
     /**
