@@ -68,7 +68,7 @@ public class ReservationGUI extends JFrame {
     //start page panels
     private JPanel title;
     private JPanel search;
-    private JPanel buttonPanel;
+//    private JPanel buttonPanel;
     private JLabel databaseName;
     
     //search card
@@ -130,20 +130,24 @@ public class ReservationGUI extends JFrame {
                 if(event.getSource() == load) //JMenu Item
                 {
                     
-                    JFileChooser chooser = new JFileChooser();
-                    chooser.setCurrentDirectory(fileObject.getAbsoluteFile()
-                        .getParentFile());
-                    int returnVal = chooser.showOpenDialog(null);
-
-                    if (returnVal == JFileChooser.APPROVE_OPTION) 
-                    {
-                        fileObject = chooser.getSelectedFile();
-                        defaultFileName = fileObject.getName().trim();
-                    }
-                    
+//                    JFileChooser chooser = new JFileChooser();
+//                    chooser.setCurrentDirectory(fileObject.getAbsoluteFile()
+//                        .getParentFile());
+//                    int returnVal = chooser.showOpenDialog(null);
+//
+//                    if (returnVal == JFileChooser.APPROVE_OPTION) 
+//                    {
+//                        fileObject = chooser.getSelectedFile();
+//                        defaultFileName = fileObject.getName().trim();
+//                    }
+                    fileObject = Viewer.pickFile();
+                    defaultFileName = fileObject.getName().trim();
                     databaseName.setText("Database: " + fileObject.getName());
+                    reservationArray = Viewer.readDatabase(fileObject);
+                    nameArray = Viewer.getNames(reservationArray);
+                    reservationJList.setListData(nameArray);
                     
-                    
+                    //MICHAEL CODE=========================================
 //                    System.out.println("Menu");
 //                    File database = Viewer.pickFile();
 //                    reservationArray = Viewer.readDatabase(database);
@@ -154,6 +158,7 @@ public class ReservationGUI extends JFrame {
 ////                    }
 //                    reservationJList.setListData(nameArray);
 //                    System.out.println(nameArray);
+                            //==================================================
                 }
                 
                 if(event.getSource() == setDefault)
@@ -178,6 +183,11 @@ public class ReservationGUI extends JFrame {
                     
                     
                     fileObject = new File(defaultFileName);
+                    
+                    
+                    reservationArray = Viewer.readDatabase(fileObject);
+                    nameArray = Viewer.getNames(reservationArray);
+                    reservationJList.setListData(nameArray);
                     
                 }
                 
@@ -226,12 +236,15 @@ public class ReservationGUI extends JFrame {
             
         }
         
+        // Check for default database
         File database = Viewer.findDefaultDatabase();
         if (database != null) {
             reservationArray = Viewer.readDatabase(database);
             nameArray = Viewer.getNames(reservationArray);
             reservationJList.setListData(nameArray);
         }
+        
+        // create Listeners
         listener = new UserSelection();
         listListener = new ListListener();
         createCardLayout();
@@ -256,16 +269,7 @@ public class ReservationGUI extends JFrame {
      * create menu bar to allow user to load a directory of there own
      */
     private void createMenuBar()
-    {
-//        menuBar = new JMenuBar();
-//        file = new JMenu("File");
-//        file.setMnemonic(KeyEvent.VK_F);
-//        load = new JMenuItem("Load Database");
-//        load.addActionListener(listener);
-//        file.add(load);
-//        menuBar.add(file);
-//        setJMenuBar(menuBar);
-        
+    {      
         menuBar = new JMenuBar();
         file = new JMenu("File");
         file.setMnemonic(KeyEvent.VK_F);
