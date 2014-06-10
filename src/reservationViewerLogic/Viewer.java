@@ -195,4 +195,27 @@ public class Viewer {
         else 
             return null;
     }
+    
+    public static Comparable[] removeDuplicates(Comparable[] array) {
+        int i = 0;
+        ArrayList<Comparable> list = new ArrayList<>();
+        while (i < list.size() - 1) {
+            if (list.get(i).equals(list.get(i + 1))) {
+                list.remove(i + 1);
+            } else {
+                i++;
+            }
+        }
+        Comparable[] arrayNoDuplicates = list.toArray(new Comparable[0]);
+        return arrayNoDuplicates;
+    }
+    
+    public static Reservation[] getReservationsAtLocation(Reservation[] reservations, Integer[] locations) {
+        ArrayList<Reservation> list = new ArrayList<> ();
+        for (Integer location : locations) {
+            list.add(reservations[location]);
+        }
+        Reservation[] results = list.toArray(new Reservation[0]);
+        return results;
+    }
 }
