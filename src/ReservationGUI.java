@@ -1,6 +1,3 @@
-
-
-
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -14,11 +11,43 @@ import javax.swing.*;
 import p3.Reservation;
 import reservationViewerLogic.*;
 import hotelBooking.FileSort;
-import java.io.*;
+import java.io.*;   
 import Calendar.*;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.util.prefs.Preferences;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
+
+
+// SEE LINE 374,, and i put the last method on the most bottom print dialog that is all. VJ 6/9/14/ 8:45
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -34,18 +63,13 @@ public class ReservationGUI extends JFrame {
     private static JFrame reservationFrame;
     
     // Array of All Reservations
-    private Reservation[] allReservations;
-    private String[] allNames;
-    private DateAD[] allArrivals;
-    private DateAD[] allDepartures;
-    
-    // These arrays will change depending on search specifications
-    private Reservation[] selectedReservations;
-    private String[] selectedNames;
-    private DateAD[] selectedArrivals;
-    private DateAD[] selectedDepartures;
+    private Reservation[] reservationArray;
     
     // Array of reservations meeting search Results
+    private Reservation[] searchedReservations;
+    
+    // Array of all Reservation names
+    private String[] nameArray;
     
     //menu bar
     private String defaultFileName = "Reservations.dat";
@@ -148,9 +172,9 @@ public class ReservationGUI extends JFrame {
                     fileObject = Viewer.pickFile();
                     defaultFileName = fileObject.getName().trim();
                     databaseName.setText("Database: " + fileObject.getName());
-                    allReservations = Viewer.readDatabase(fileObject);
-                    allNames = Viewer.getNames(allReservations);
-                    reservationJList.setListData(allNames);
+                    reservationArray = Viewer.readDatabase(fileObject);
+                    nameArray = Viewer.getNames(reservationArray);
+                    reservationJList.setListData(nameArray);
                     
                     //MICHAEL CODE=========================================
 //                    System.out.println("Menu");
@@ -175,7 +199,7 @@ public class ReservationGUI extends JFrame {
 
                     if (returnVal == JFileChooser.APPROVE_OPTION) 
                     {
-                        defaultFileName = fileChooser.getSelectedFile().getPath();
+                        defaultFileName = fileChooser.getSelectedFile().getName();
                         prefs.put("LAST_FILE", defaultFileName);
                     }
                     
@@ -190,9 +214,9 @@ public class ReservationGUI extends JFrame {
                     fileObject = new File(defaultFileName);
                     
                     
-                    allReservations = Viewer.readDatabase(fileObject);
-                    allNames = Viewer.getNames(allReservations);
-                    reservationJList.setListData(allNames);
+                    reservationArray = Viewer.readDatabase(fileObject);
+                    nameArray = Viewer.getNames(reservationArray);
+                    reservationJList.setListData(nameArray);
                     
                 }
                 
@@ -217,14 +241,7 @@ public class ReservationGUI extends JFrame {
                 //If user searches
                 if(event.getSource() == searchJButton)
                 {
-                    String search = searchBar.getText();
-                    Integer[] locations = BinarySearch.searchForAll(allNames,
-                            search);
-                    selectedReservations = Viewer.getReservationsAtLocation(
-                            allReservations, locations);
-                    for (Reservation r : selectedReservations) {
-                        System.out.println(r + ", ");
-                    }
+                    System.out.print("AAAAAAAAAAAAAAAH");
                 }
                 //If user selects searchByComboBox
                 if(event.getSource() == searchByComboBox)
@@ -242,17 +259,13 @@ public class ReservationGUI extends JFrame {
             public void valueChanged(ListSelectionEvent e)
             {
                 int index = reservationJList.getSelectedIndex();
-                if (index >= 0)
-                {
-                    Reservation outputReservation = allReservations[index];
+                Reservation outputReservation = reservationArray[index];
                 // Each name on the left will probably represent several
-                    // reservations (what if one person has multiple?) so when
-                    // that name is clicked, all of the reservations should show
-                    // up on the right
-                    String output = outputReservation.toString();
-                    reservationTextArea.setText(output);
-                }
-
+                // reservations (what if one person has multiple?) so when
+                // that name is clicked, all of the reservations should show
+                // up on the right
+                String output = outputReservation.toString();
+                reservationTextArea.setText(output);
             }
             
         }
@@ -267,9 +280,9 @@ public class ReservationGUI extends JFrame {
         // Check for default database
         File database = Viewer.findDefaultDatabase();
         if (database != null) {
-            allReservations = Viewer.readDatabase(database);
-            allNames = Viewer.getNames(allReservations);
-            reservationJList.setListData(allNames);
+            reservationArray = Viewer.readDatabase(database);
+            nameArray = Viewer.getNames(reservationArray);
+            reservationJList.setListData(nameArray);
         }
     }
     
@@ -357,12 +370,23 @@ public class ReservationGUI extends JFrame {
         
         return panel;
     }
+    
+    // I CHANGED STARTED HERE THEN LINE 407 408 and 416.
+    class PrintListner implements ActionListener
+    {
+            @Override
+            public void actionPerformed(ActionEvent event)
+            {
+                createPrintDialog();
+            }
+    }
     /**
      * Creates the reservation page that contains all Reservation displaying
      * boxes and such. 
      */
     private void createReservationPage()
     {
+        PrintListner listener = new PrintListner();
         searchPanel = new JPanel(); //flow layout
         searchPanel.setBorder(BorderFactory.createLineBorder(Color.black,
                 1, true));
@@ -380,6 +404,8 @@ public class ReservationGUI extends JFrame {
         searchBarLabel = new JLabel("Search Database: ");
         searchBar = new JTextField(20);
         searchDatabaseJButton = new JButton("Search");
+        JButton printButton = new JButton("Print");
+        printButton.addActionListener(listener);
         comboLabel = new JLabel("Search database by: ");
         searchByComboBox = new JComboBox(comboItems);
         
@@ -387,6 +413,7 @@ public class ReservationGUI extends JFrame {
         searchPanel.add(searchBarLabel);
         searchPanel.add(searchBar);
         searchPanel.add(searchDatabaseJButton);
+        searchPanel.add(printButton);
         searchPanel.add(comboLabel);
         searchPanel.add(searchByComboBox);
         
@@ -437,16 +464,24 @@ public class ReservationGUI extends JFrame {
         controlPanel.add(cardLayoutPanel, BorderLayout.CENTER);
         add(controlPanel);
         
-        
-        
     }
     
-    private void setArrays(Reservation[] allReservations) {
-        this.allReservations = allReservations;
-        allNames = Viewer.getNames(allReservations);
-        allArrivals = Viewer.getArrivals(allReservations);
-        allDepartures = Viewer.getDepartures(allReservations);
+    private void createPrintDialog()
+    {
+        PrinterJob pj = PrinterJob.getPrinterJob();
         
+            if(pj.printDialog())
+            {
+                try
+                {
+                    pj.print();
+                }
+                
+                catch(PrinterException e)
+                {
+                    return;
+                }
+            }
     }
     
 }
