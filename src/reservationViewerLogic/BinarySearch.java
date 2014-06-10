@@ -45,11 +45,15 @@ public class BinarySearch
      * object
      * @param array the array to search through
      * @param searchObject the searchObject to compare to
-     * @return an array containing all of the found matches
+     * @return an array containing all of the found matches. returns null if 
+     * no location found
      */
     public static Integer[] searchForAll(Comparable[] array, Comparable searchObject) 
     {
         int generalLocation = search(array, searchObject);
+        if (generalLocation < 0) {
+            return null;
+        }
         return findNear(array, searchObject, generalLocation);
     }
 
@@ -105,7 +109,7 @@ public class BinarySearch
     private static Integer[] findNear(Comparable[] array, Comparable searchObject,
             int index)
     {
-        ArrayList<Integer> indexList = new ArrayList<Integer>();
+        ArrayList<Integer> indexList = new ArrayList<>();
         for (int i = 0; i < 2; i++)
         {
             int j = index - i;
