@@ -2,6 +2,9 @@
 // SO I USED MY RESERVATION CLASS FROM PROJECT THREE, AND I ALSO USED MY DATABASE FILE WHICH IS DIFFERENT FROM YOURS. THAT IS WHY I NEED TO USE MY RESERVATION CLASS
 // I CHANGED IN THE  BINARY SEACH CLASS. I USED MY VERSION OF BINARY SEARCH. U KNOW IT IS WORKING IF U SEARCH A TERM, IT WILL PRINT OUT ALL 
 // RESULTS IN THE CONSOLE. SO YEAH.. GG
+// update, I polish the interface!!! so labels are working right now.
+// Please don't do anythig to the File object stuffs guys :) Thanks.
+// update, see line 296
 
 
 import java.awt.BorderLayout;
@@ -22,6 +25,7 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.util.prefs.Preferences;
 import java.util.ArrayList;
+import java.util.prefs.Preferences;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -140,6 +144,12 @@ public class ReservationGUI extends JFrame {
             fileObject = new File(defaultFileObject.getName());
         }
         
+        // new thing
+        if(defaultFileObject.exists() && fileObject.exists())
+        {
+            fileObject = new File(prefs.get("LAST_FILE", ""));
+        }
+        
         
         /**
          * Class Action listener listens for all user input
@@ -164,9 +174,16 @@ public class ReservationGUI extends JFrame {
                         defaultFileName = fileObject.getName().trim();
                     }
                     
+                    if (returnVal == JFileChooser.CANCEL_OPTION)
+                    {
+                        return;
+                    }
+                    
+                    databaseName.setText("Database: " + fileObject.getName());
+                    
                     ArrayList<Reservation> reservationArrayList = new ArrayList<>();
                     allReservations = Viewer.readDatabase(fileObject);
-
+                    
                    
                     for(Reservation v : allReservations)
                         System.out.println(v);
@@ -205,15 +222,15 @@ public class ReservationGUI extends JFrame {
 
                     if (returnVal == JFileChooser.APPROVE_OPTION) 
                     {
-                        defaultFileName = fileChooser.getSelectedFile().getPath();
+                        defaultFileName = fileChooser.getSelectedFile().getName();
                         prefs.put("LAST_FILE", defaultFileName);
                     }
                     
-                    if (returnVal == JFileChooser.CANCEL_OPTION)
+                    if (returnVal == JFileChooser.CANCEL_OPTION) 
                     {
-                        
+                        return;
                     }
-                    
+                  
                     databaseName.setText("Database: " + defaultFileName);
                     
                     
@@ -305,12 +322,22 @@ public class ReservationGUI extends JFrame {
         
         
         // Check for default database
-        File database = Viewer.findDefaultDatabase();
-        if (database != null) {
-            allReservations = Viewer.readDatabase(database);
-            allNames = Viewer.getNames(allReservations);
-            reservationJList.setListData(allNames);
+
+        //default file obejct = reservatinos.dat
+        //file objecct = the default set ups
+
+        //changed this part
+        if(defaultFileObject.exists() && fileObject.exists())
+        {
         }
+        else if(defaultFileObject.exists() && !(fileObject.exists()))
+        {
+            fileObject = defaultFileObject;
+        }
+        
+        allReservations = Viewer.readDatabase(fileObject);
+        allNames = Viewer.getNames(allReservations);
+        reservationJList.setListData(allNames);
     }
     
     /**
@@ -358,10 +385,20 @@ public class ReservationGUI extends JFrame {
 //        cardComboBox.addActionListener(listener);
 //        comboPanel.add(cardComboBox);
         
-        if(fileObject.exists())
+        if(defaultFileObject.exists() && fileObject.exists())
         {
             databaseName = new JLabel("Database: " + fileObject.getName());
         }
+        else if(defaultFileObject.exists())
+        {
+            databaseName = new JLabel("Database: " + defaultFileName);
+        }
+        
+        else if(fileObject.exists())
+        {
+            databaseName = new JLabel("Database: " + fileObject.getName());
+        }
+        
         else
             databaseName = new JLabel("Database: No Database");
         
@@ -475,7 +512,7 @@ public class ReservationGUI extends JFrame {
                 1, true));
         reservationListPanel.setLayout(new GridLayout());
         
-        String comboItems[] = {"Name","Date"};
+        String comboItems[] = {"Name","Start Date", "End Date"};
         
         searchBarLabel = new JLabel("Search Database: ");
         searchBar = new JTextField(20);
@@ -501,7 +538,7 @@ public class ReservationGUI extends JFrame {
         reservationListPanel.add(listScroller);
         
         //add to databasePanel
-        databasePanel.add(searchingJPanel, BorderLayout.NORTH);
+        databasePanel.add(searchPanel, BorderLayout.NORTH);
         databasePanel.add(reservationPanel, BorderLayout.CENTER);
         databasePanel.add(reservationListPanel, BorderLayout.WEST);
         
