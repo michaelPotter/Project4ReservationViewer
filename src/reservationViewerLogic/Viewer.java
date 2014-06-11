@@ -1,7 +1,7 @@
 package reservationViewerLogic;
 
 import hotelBooking.FileSort;
-import p3.Reservation;
+import filesort.Reservation;
 import hotelBooking.Sorts;
 import Calendar.*;
 
@@ -22,30 +22,7 @@ import java.util.Scanner;
  * @author Michael
  */
 public class Viewer {
-    /**
-     * NO LONGER CURRENT
-     * A command line version of the search program. Should work similaraly to 
-     * the gui format
-     * @param args 
-     */
-	public static void main(String[] args) {
-		boolean containSearch = false;
-
-		File database = FileSort.pickFile();
-		System.out.print("Enter a search term: ");
-		Scanner scanner = new Scanner(System.in);
-		String searchTerm = scanner.next();
-		String token = "";
-//		if (scanner.hasNext())
-//		token = scanner.next();
-//		if (token.equals("-contains"))
-//			containSearch = true;
-
-		Reservation[] results = findReservations(database, searchTerm, containSearch);
-		for (Reservation reservation : results) {
-			System.out.println(reservation); 
-		}
-	}
+  
 
     // This method will probably not be used since it makes more sense to 
     // read the database once, create a Reservation[] and search from that.
@@ -58,9 +35,11 @@ public class Viewer {
      * @param containSearch whether to search in whole or containing 
      * @return an array of reservations that met the search parameters
      */
+    
 	public static Reservation[] findReservations(File database,
 			String searchTerm, boolean containSearch) {
 		Reservation[] allReservations = readDatabase(database);
+                System.out.println(allReservations);
 		String[] reservationNames = getNames(allReservations);
 		int generalLocation = reservationViewerLogic.BinarySearch.search(
 				reservationNames, searchTerm);
@@ -94,12 +73,46 @@ public class Viewer {
 		Sorts.quickSort(searchResultsArray);
 		return searchResultsArray;
 	}
+    
+        
+        
+        public static Reservation[] readDatabase(File database) 
+        {
+            ArrayList<Reservation> reservationArrayList = new ArrayList<>();
+            Reservation[] reservationArray;
+            
+            try
+            {
+                FileInputStream fis = new FileInputStream(database);
+                ObjectInputStream ois = new ObjectInputStream(fis);
 
+                //Read the number of Reservation objects inside the file, which 
+                // is informed from previous call of the program.
+                int j = ois.readInt();
+                for(int i = 0; i < j; i++)
+                {
+                    reservationArrayList.add((Reservation)ois.readObject());
+                }
+            }
+            
+            catch(ClassNotFoundException i){}
+            catch(IOException e){}
+            
+            reservationArray = new Reservation[reservationArrayList.size()];
+            reservationArrayList.toArray(reservationArray);
+            return reservationArray;
+        }
+        
+        
     /**
      * Reads a database of Reservations. 
      * @param database the file containing the object data
      * @return the list of reservations read from the file
      */
+        
+        
+        
+        /**
 	public static Reservation[] readDatabase(File database) {
 		if (database.exists() && database.canRead()) {
 			FileInputStream fileInputStream = null;
@@ -133,6 +146,7 @@ public class Viewer {
 		} else
 			return null;
 	}
+        * /
 
     /**
      * Returns an array of Strings containing the names of Reservations in the 
@@ -218,4 +232,6 @@ public class Viewer {
         Reservation[] results = list.toArray(new Reservation[0]);
         return results;
     }
+    
+    
 }
