@@ -1,3 +1,9 @@
+// SUMMARY OF CHANGES
+// SO I USED MY RESERVATION CLASS FROM PROJECT THREE, AND I ALSO USED MY DATABASE FILE WHICH IS DIFFERENT FROM YOURS. THAT IS WHY I NEED TO USE MY RESERVATION CLASS
+// I CHANGED IN THE  BINARY SEACH CLASS. I USED MY VERSION OF BINARY SEARCH. U KNOW IT IS WORKING IF U SEARCH A TERM, IT WILL PRINT OUT ALL 
+// RESULTS IN THE CONSOLE. SO YEAH.. GG
+
+
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -8,46 +14,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import javax.swing.*;
-import p3.Reservation;
+import filesort.Reservation;
 import reservationViewerLogic.*;
-import hotelBooking.FileSort;
-import java.io.*;   
+import java.io.*;
 import Calendar.*;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.util.prefs.Preferences;
+import java.util.ArrayList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
-
-
-// SEE LINE 374,, and i put the last method on the most bottom print dialog that is all. VJ 6/9/14/ 8:45
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -63,13 +39,18 @@ public class ReservationGUI extends JFrame {
     private static JFrame reservationFrame;
     
     // Array of All Reservations
-    private Reservation[] reservationArray;
+    private Reservation[] allReservations;
+    private String[] allNames;
+    private DateAD[] allArrivals;
+    private DateAD[] allDepartures;
+    
+    // These arrays will change depending on search specifications
+    private Reservation[] selectedReservations;
+    private String[] selectedNames;
+    private DateAD[] selectedArrivals;
+    private DateAD[] selectedDepartures;
     
     // Array of reservations meeting search Results
-    private Reservation[] searchedReservations;
-    
-    // Array of all Reservation names
-    private String[] nameArray;
     
     //menu bar
     private String defaultFileName = "Reservations.dat";
@@ -120,8 +101,8 @@ public class ReservationGUI extends JFrame {
     private Preferences prefs; 
     
     //listener
-    private ActionListener listener; // for everything in the club!
-    private ListSelectionListener listListener; // because JList needs a special 
+    private final ActionListener listener; // for everything in the club!
+    private final ListSelectionListener listListener; // because JList needs a special 
     // kind of listener
     
     /**
@@ -159,22 +140,34 @@ public class ReservationGUI extends JFrame {
                 if(event.getSource() == load) //JMenu Item
                 {
                     
-//                    JFileChooser chooser = new JFileChooser();
-//                    chooser.setCurrentDirectory(fileObject.getAbsoluteFile()
-//                        .getParentFile());
-//                    int returnVal = chooser.showOpenDialog(null);
-//
-//                    if (returnVal == JFileChooser.APPROVE_OPTION) 
-//                    {
-//                        fileObject = chooser.getSelectedFile();
-//                        defaultFileName = fileObject.getName().trim();
-//                    }
-                    fileObject = Viewer.pickFile();
-                    defaultFileName = fileObject.getName().trim();
-                    databaseName.setText("Database: " + fileObject.getName());
-                    reservationArray = Viewer.readDatabase(fileObject);
-                    nameArray = Viewer.getNames(reservationArray);
-                    reservationJList.setListData(nameArray);
+                    JFileChooser chooser = new JFileChooser();
+                    chooser.setCurrentDirectory(fileObject.getAbsoluteFile()
+                        .getParentFile());
+                    int returnVal = chooser.showOpenDialog(null);
+
+                    if (returnVal == JFileChooser.APPROVE_OPTION) 
+                    {
+                        fileObject = chooser.getSelectedFile();
+                        defaultFileName = fileObject.getName().trim();
+                    }
+                    
+                    ArrayList<Reservation> reservationArrayList = new ArrayList<>();
+                    allReservations = Viewer.readDatabase(fileObject);
+
+                   
+                    for(Reservation v : allReservations)
+                        System.out.println(v);
+                    
+                    //this becomes complicated.. Change this part when everything is working fine, if u want
+                    
+//                    fileObject = Viewer.pickFile();
+//                    defaultFileName = fileObject.getName().trim();
+//                    databaseName.setText("Database: " + fileObject.getName());
+//                    allReservations = Viewer.readDatabase(fileObject);
+                    
+                    
+                    allNames = Viewer.getNames(allReservations);
+                    reservationJList.setListData(allNames);
                     
                     //MICHAEL CODE=========================================
 //                    System.out.println("Menu");
@@ -199,13 +192,13 @@ public class ReservationGUI extends JFrame {
 
                     if (returnVal == JFileChooser.APPROVE_OPTION) 
                     {
-                        defaultFileName = fileChooser.getSelectedFile().getName();
+                        defaultFileName = fileChooser.getSelectedFile().getPath();
                         prefs.put("LAST_FILE", defaultFileName);
                     }
                     
                     if (returnVal == JFileChooser.CANCEL_OPTION)
                     {
-                        return;
+                        
                     }
                     
                     databaseName.setText("Database: " + defaultFileName);
@@ -214,9 +207,9 @@ public class ReservationGUI extends JFrame {
                     fileObject = new File(defaultFileName);
                     
                     
-                    reservationArray = Viewer.readDatabase(fileObject);
-                    nameArray = Viewer.getNames(reservationArray);
-                    reservationJList.setListData(nameArray);
+                    allReservations = Viewer.readDatabase(fileObject);
+                    allNames = Viewer.getNames(allReservations);
+                    reservationJList.setListData(allNames);
                     
                 }
                 
@@ -241,7 +234,16 @@ public class ReservationGUI extends JFrame {
                 //If user searches
                 if(event.getSource() == searchJButton)
                 {
-                    System.out.print("AAAAAAAAAAAAAAAH");
+                    // SOMEONE UGHH,, SOMEONE PUT SEARCHBAR.GETTEXT() WHICH IS THE JTEXTFIELD FOR THE SECOND CARD!
+                    // Haha, that was me ;)
+                    String search = startSearch.getText();
+                    Integer[] locations = BinarySearch.searchForAll(allNames,
+                            search);
+                    selectedReservations = Viewer.getReservationsAtLocation(
+                            allReservations, locations);
+                    for (Reservation r : selectedReservations) {
+                        System.out.println(r + ", ");
+                    }
                 }
                 //If user selects searchByComboBox
                 if(event.getSource() == searchByComboBox)
@@ -259,13 +261,17 @@ public class ReservationGUI extends JFrame {
             public void valueChanged(ListSelectionEvent e)
             {
                 int index = reservationJList.getSelectedIndex();
-                Reservation outputReservation = reservationArray[index];
+                if (index >= 0)
+                {
+                    Reservation outputReservation = allReservations[index];
                 // Each name on the left will probably represent several
-                // reservations (what if one person has multiple?) so when
-                // that name is clicked, all of the reservations should show
-                // up on the right
-                String output = outputReservation.toString();
-                reservationTextArea.setText(output);
+                    // reservations (what if one person has multiple?) so when
+                    // that name is clicked, all of the reservations should show
+                    // up on the right
+                    String output = outputReservation.toString();
+                    reservationTextArea.setText(output);
+                }
+
             }
             
         }
@@ -280,9 +286,9 @@ public class ReservationGUI extends JFrame {
         // Check for default database
         File database = Viewer.findDefaultDatabase();
         if (database != null) {
-            reservationArray = Viewer.readDatabase(database);
-            nameArray = Viewer.getNames(reservationArray);
-            reservationJList.setListData(nameArray);
+            allReservations = Viewer.readDatabase(database);
+            allNames = Viewer.getNames(allReservations);
+            reservationJList.setListData(allNames);
         }
     }
     
@@ -465,7 +471,7 @@ public class ReservationGUI extends JFrame {
         add(controlPanel);
         
     }
-    
+        
     private void createPrintDialog()
     {
         PrinterJob pj = PrinterJob.getPrinterJob();
@@ -475,8 +481,8 @@ public class ReservationGUI extends JFrame {
                 try
                 {
                     pj.print();
-                }
-                
+    }
+    
                 catch(PrinterException e)
                 {
                     return;
