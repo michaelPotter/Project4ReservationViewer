@@ -52,8 +52,6 @@ public class ReservationGUI extends JFrame {
     private DateAD[] selectedArrivals;
     private DateAD[] selectedDepartures;
     
-    // Array of reservations meeting search Results
-    
     //menu bar
     private String defaultFileName = "Reservations.dat";
     private File defaultFileObject;
@@ -316,7 +314,7 @@ public class ReservationGUI extends JFrame {
         // create Listeners
         listener = new UserSelection();
         listListener = new ListListener();
-        createCardLayout();
+        createDatabasePage();
         
         
         // Check for default database
@@ -580,7 +578,7 @@ public class ReservationGUI extends JFrame {
     /**
      * Create the card layout of the program. powered by the cardComboBox
      */
-    private void createCardLayout()
+    private void createDatabasePage()
     {
         controlPanel = new JPanel();
         controlPanel.setLayout(new BorderLayout());
@@ -588,25 +586,13 @@ public class ReservationGUI extends JFrame {
         createMenuBar();
         createComboBox();
         
-        //create cards for card layout
-        //startPagePanel = new JPanel();
-        //startPagePanel.setLayout(new GridBagLayout());
-        //startPagePanel.add(createSearchPage());
-        
         databasePanel = new JPanel();
         databasePanel.setLayout(new BorderLayout());
         createReservationPage();
         
-        //cardLayoutPanel = new JPanel(new CardLayout());
-        //cardLayoutPanel.add(startPagePanel, "Search");
-        //cardLayoutPanel.add(databasePanel, "Reservations");
-        
         controlPanel.add(comboPanel, BorderLayout.NORTH);
         controlPanel.add(databasePanel, BorderLayout.CENTER);
         add(controlPanel);
-        
-        
-        
     }
     
     private void setArrays(Reservation[] arrayWithAllReservations) 

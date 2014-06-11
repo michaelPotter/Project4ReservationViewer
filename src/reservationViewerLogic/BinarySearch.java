@@ -154,6 +154,11 @@ public class BinarySearch
         for (int i = 0; i < 2; i++)
         {
             int j = index - i;
+            //Changed here
+            if(j == -1)
+            {
+                break;
+            }
             boolean stillSearching = true;
 
             while (stillSearching)
