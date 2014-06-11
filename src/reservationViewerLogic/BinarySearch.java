@@ -71,6 +71,46 @@ public class BinarySearch
             Comparable searchObject, int startIndex, int endIndex)
     {
         final int DOES_NOT_EXIST = -1;
+         if(startIndex > endIndex)
+        {
+            return DOES_NOT_EXIST;
+        }
+        
+        else
+        {
+            int mid = (endIndex + startIndex) / 2;
+            
+            if(array[mid].compareTo(searchObject) > 0)
+            {
+                return searchFor(array, searchObject, startIndex, mid - 1);
+            }
+            
+            else if(array[mid].compareTo(searchObject) < 0)
+            {   
+                return searchFor(array, searchObject, mid + 1, endIndex);
+            }
+            
+            else 
+            {
+                return mid;
+            }
+        
+        }
+        
+        //   ^
+        //   |  
+        //   |
+        //  MINE
+         
+         
+         
+       //michaels
+       // |
+       // |
+       // V 
+        
+        /*
+        final int DOES_NOT_EXIST = -1;
         int length = endIndex - startIndex;
         int half = length / 2 + startIndex;
         int result = array[half].compareTo(searchObject);
@@ -95,6 +135,7 @@ public class BinarySearch
             endIndex = half;
         }
         return searchFor(array, searchObject, startIndex, endIndex);
+        */
     }
 
     /**
@@ -120,7 +161,7 @@ public class BinarySearch
                 if (array[j].equals(searchObject))
                 {
                     
-                    if (j == 0 || j == array.length)
+                    if (j == 0 || j == array.length-1) // changed it here, b4 was array.length. 
                         stillSearching = false;
                     indexList.add(j);
                     if (i == 0)
