@@ -44,6 +44,7 @@ public class ReservationGUI extends JFrame {
     // Array of All Reservations
     private Reservation[] allReservations;
     private String[] allNames;
+    private String[] allNamesInCaps;
     private DateAD[] allArrivals;
     private DateAD[] allDepartures;
     
@@ -52,8 +53,6 @@ public class ReservationGUI extends JFrame {
     private String[] selectedNames;
     private DateAD[] selectedArrivals;
     private DateAD[] selectedDepartures;
-    
-    // Array of reservations meeting search Results
     
     //menu bar
     private String defaultFileName = "Reservations.dat";
@@ -230,7 +229,9 @@ public class ReservationGUI extends JFrame {
                     
                     fileObject = new File(defaultFileName);
                     
-                    allReservations = Viewer.readDatabase(fileObject);
+                    Reservation[] reservations = Viewer.readDatabase(fileObject);
+                    setArrays(reservations);
+                    
                     allNames = Viewer.getNames(allReservations);
                     reservationJList.setListData(allNames);
                 }
@@ -594,9 +595,19 @@ public class ReservationGUI extends JFrame {
         controlPanel.add(comboPanel, BorderLayout.NORTH);
         controlPanel.add(databasePanel, BorderLayout.CENTER);
         add(controlPanel);
-        
-        
-        
+    }
+    
+    private void setArrays(Reservation[] arrayWithAllReservations) 
+    {
+        allReservations = arrayWithAllReservations;
+        allNames = Viewer.getNames(allReservations);
+        allNamesInCaps = new String[allNames.length];
+        for (int i = 0; i < allNames.length; i++) 
+        {
+            allNamesInCaps[i] = allNames[i].toUpperCase();
+        }
+        allArrivals = Viewer.getArrivals(allReservations);
+        allDepartures = Viewer.getDepartures(allReservations);
     }
     
     
