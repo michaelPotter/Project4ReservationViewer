@@ -68,12 +68,25 @@ public class ReservationGUI extends JFrame {
     private JPanel cardLayoutPanel;
     private JPanel databasePanel; //BorderLayout
     private JPanel startPagePanel; //Boxlayout?
+    private JPanel searchCardLayoutPanel;
     
     //reseration panels
-    private JPanel titlePanel; // title and combobox of options
+    private JPanel searchingJPanel;
+    private JPanel searchControlPanel; //contains combos for date searching
+    private JPanel searchByComboPanel; // combobox of search by options
     private JPanel searchPanel; //contains search bar and button
+    private JPanel searchDatePanel; //
     private JPanel reservationPanel; //holds reservations and label
     private JPanel reservationListPanel; //holds list of reservations
+    
+    //searchDatePanel
+    private JComboBox monthJComboBox;
+    private JComboBox dayJComboBox;
+    private JComboBox yearJComboBox;
+    private JLabel monthJLabel;
+    private JLabel dayJLabel;
+    private JLabel yearJLabel;
+    private JButton searchDateJButton;
     
     //start page panels
     private JPanel title;
@@ -231,6 +244,14 @@ public class ReservationGUI extends JFrame {
                         cardButton.setText("See Reservations");
                     
                 }
+                // if user selects a different search method
+                if (event.getSource() == searchByComboBox)
+                {
+                    CardLayout c2 = (CardLayout) 
+                            searchCardLayoutPanel.getLayout();
+                    c2.show(searchCardLayoutPanel,
+                            (String)searchByComboBox.getSelectedItem());
+                }
                 //If user searches
                 if(event.getSource() == searchJButton)
                 {
@@ -376,6 +397,52 @@ public class ReservationGUI extends JFrame {
         
         return panel;
     }
+    /**
+     * Method for setting up the card layout of the searching methods
+     */
+    private void createSearchCardLayout()
+    {
+        searchingJPanel = new JPanel(new BorderLayout());
+        searchCardLayoutPanel = new JPanel(new CardLayout());
+        searchControlPanel = new JPanel();
+        
+        //objects
+        monthJComboBox = new JComboBox();
+        dayJComboBox = new JComboBox();
+        yearJComboBox = new JComboBox();
+        monthJLabel = new JLabel("Month");
+        dayJLabel = new JLabel("Day");
+        yearJLabel = new JLabel("Year");
+        searchDateJButton = new JButton("Search");
+        
+        searchByComboBox.addActionListener(listener);
+        
+        //set up search control panel
+        searchControlPanel.add(comboLabel);
+        searchControlPanel.add(searchByComboBox);
+        
+        //set up search panel
+        searchPanel.add(searchBarLabel);
+        searchPanel.add(searchBar);
+        searchPanel.add(searchDatabaseJButton);
+        //searchPanel.add(comboLabel);
+        //searchPanel.add(searchByComboBox);
+        
+        //set up searchby panel
+        searchByComboPanel.add(monthJLabel);
+        searchByComboPanel.add(monthJComboBox);
+        searchByComboPanel.add(dayJLabel);
+        searchByComboPanel.add(dayJComboBox);
+        searchByComboPanel.add(yearJLabel);
+        searchByComboPanel.add(yearJComboBox);
+        searchByComboPanel.add(searchDateJButton);
+        
+        searchCardLayoutPanel.add(searchPanel, "Name");
+        searchCardLayoutPanel.add(searchByComboPanel, "Date");
+        
+        searchingJPanel.add(searchControlPanel, BorderLayout.NORTH);
+        searchingJPanel.add(searchCardLayoutPanel, BorderLayout.SOUTH);
+    }
     
     // I CHANGED STARTED HERE THEN LINE 407 408 and 416.
     class PrintListner implements ActionListener
@@ -393,9 +460,12 @@ public class ReservationGUI extends JFrame {
     private void createReservationPage()
     {
         PrintListner listener = new PrintListner();
+        searchByComboPanel = new JPanel();
+        searchByComboPanel.setBorder(BorderFactory.createLineBorder(Color.black, 1, true));
         searchPanel = new JPanel(); //flow layout
         searchPanel.setBorder(BorderFactory.createLineBorder(Color.black,
                 1, true));
+        
         reservationPanel = new JPanel(); //Box layout
         reservationPanel.setBorder(BorderFactory.createLineBorder(Color.black,
                 1, true));
@@ -405,7 +475,7 @@ public class ReservationGUI extends JFrame {
                 1, true));
         reservationListPanel.setLayout(new GridLayout());
         
-        String comboItems[] = {"Name","Start Date", "End Date"};
+        String comboItems[] = {"Name","Date"};
         
         searchBarLabel = new JLabel("Search Database: ");
         searchBar = new JTextField(20);
@@ -415,13 +485,7 @@ public class ReservationGUI extends JFrame {
         comboLabel = new JLabel("Search database by: ");
         searchByComboBox = new JComboBox(comboItems);
         
-        //set up search panel
-        searchPanel.add(searchBarLabel);
-        searchPanel.add(searchBar);
-        searchPanel.add(searchDatabaseJButton);
-        searchPanel.add(printButton);
-        searchPanel.add(comboLabel);
-        searchPanel.add(searchByComboBox);
+        createSearchCardLayout();
         
         //set up reservation panel
         reservationTextArea = new JTextArea();
@@ -437,7 +501,7 @@ public class ReservationGUI extends JFrame {
         reservationListPanel.add(listScroller);
         
         //add to databasePanel
-        databasePanel.add(searchPanel, BorderLayout.NORTH);
+        databasePanel.add(searchingJPanel, BorderLayout.NORTH);
         databasePanel.add(reservationPanel, BorderLayout.CENTER);
         databasePanel.add(reservationListPanel, BorderLayout.WEST);
         
