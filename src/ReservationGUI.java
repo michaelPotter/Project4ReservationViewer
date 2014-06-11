@@ -48,9 +48,10 @@ public class ReservationGUI extends JFrame {
     
     // These arrays will change depending on search specifications
     private Reservation[] selectedReservations;
-    private String[] selectedNames;
-    private DateAD[] selectedArrivals;
-    private DateAD[] selectedDepartures;
+    // This array will contain the indexes of the reservations that match
+    // the current search
+    private Integer[] currentReservationIndexes;
+    private String[] listOfNamesToDisplay;
     
     //menu bar
     private String defaultFileName = "Reservations.dat";
