@@ -224,7 +224,9 @@ public class Viewer {
         return arrayNoDuplicates;
     }
     
-    public static Reservation[] getReservationsAtLocation(Reservation[] reservations, Integer[] locations) {
+    public static Reservation[] getReservationsAtLocation(Reservation[] reservations, Integer[] locations)
+    {
+        
         ArrayList<Reservation> list = new ArrayList<> ();
         for (Integer location : locations) {
             list.add(reservations[location]);

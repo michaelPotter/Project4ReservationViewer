@@ -223,18 +223,14 @@ public class ReservationGUI extends JFrame {
                     {
                         return;
                     }
-                  
-                    
                     databaseName.setText("Database: " + defaultFileName);
                     
                     
                     fileObject = new File(defaultFileName);
                     
-                    
                     allReservations = Viewer.readDatabase(fileObject);
                     allNames = Viewer.getNames(allReservations);
                     reservationJList.setListData(allNames);
-                    
                 }
                 
                 
@@ -270,6 +266,12 @@ public class ReservationGUI extends JFrame {
                     String search = searchBar.getText();
                     Integer[] locations = BinarySearch.searchForAll(allNames,
                             search);
+                    if(locations == null)
+                    {
+                        JOptionPane.showMessageDialog(null, "Search is not found.");
+                        return;
+                    }
+                   
                     selectedReservations = Viewer.getReservationsAtLocation(
                             allReservations, locations);
                     for (Reservation r : selectedReservations) {
