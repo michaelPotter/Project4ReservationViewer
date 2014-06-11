@@ -51,8 +51,6 @@ public class ReservationGUI extends JFrame {
     private DateAD[] selectedArrivals;
     private DateAD[] selectedDepartures;
     
-    // Array of reservations meeting search Results
-    
     //menu bar
     private String defaultFileName = "Reservations.dat";
     private File defaultFileObject;
@@ -601,10 +599,5 @@ public class ReservationGUI extends JFrame {
         controlPanel.add(comboPanel, BorderLayout.NORTH);
         controlPanel.add(databasePanel, BorderLayout.CENTER);
         add(controlPanel);
-        
-        
-        
     }
-    
-    
 }
