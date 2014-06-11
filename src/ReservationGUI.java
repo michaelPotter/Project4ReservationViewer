@@ -178,32 +178,9 @@ public class ReservationGUI extends JFrame {
                     
                     databaseName.setText("Database: " + fileObject.getName());
                     
-                    ArrayList<Reservation> reservationArrayList = new ArrayList<>();
                     allReservations = Viewer.readDatabase(fileObject);
-                    
-                    //this becomes complicated.. Change this part when everything is working fine, if u want
-                    
-//                    fileObject = Viewer.pickFile();
-//                    defaultFileName = fileObject.getName().trim();
-//                    databaseName.setText("Database: " + fileObject.getName());
-//                    allReservations = Viewer.readDatabase(fileObject);
-                    
-                    
-                    allNames = Viewer.getNames(allReservations);
+                    setArrays(allReservations);
                     reservationJList.setListData(allNames);
-                    
-                    //MICHAEL CODE=========================================
-//                    System.out.println("Menu");
-//                    File database = Viewer.pickFile();
-//                    reservationArray = Viewer.readDatabase(database);
-//                    nameArray = Viewer.getNames(reservationArray); //new String[reservationArray.length];
-////                    for (int i = 0; i < reservationArray.length; i++) 
-////                    {
-////                        nameArray[i] = reservationArray[i].getName();
-////                    }
-//                    reservationJList.setListData(nameArray);
-//                    System.out.println(nameArray);
-                            //==================================================
                 }
                 
                 if(event.getSource() == setDefault)
@@ -228,10 +205,8 @@ public class ReservationGUI extends JFrame {
                     
                     fileObject = new File(defaultFileName);
                     
-                    Reservation[] reservations = Viewer.readDatabase(fileObject);
-                    setArrays(reservations);
-                    
-                    allNames = Viewer.getNames(allReservations);
+                    allReservations = Viewer.readDatabase(fileObject);
+                    setArrays(allReservations);
                     reservationJList.setListData(allNames);
                 }
                 
