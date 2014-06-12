@@ -534,6 +534,8 @@ public class ReservationGUI extends JFrame {
         reservationJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         reservationJList.addListSelectionListener(listListener);
         JScrollPane listScroller = new JScrollPane(reservationJList);
+        reservationJList.setPrototypeCellValue("XXXXXXXXXXXXXXXX"
+                + "XXXXXX");
         reservationListPanel.add(listScroller);
         
         //add to databasePanel
