@@ -223,7 +223,8 @@ public class ReservationGUI extends JFrame {
                             (String)searchByComboBox.getSelectedItem());
                 }
                 //If user searches also searchDateJButton needs to be implemented
-                if(event.getSource() == searchDatabaseJButton)
+                if(event.getSource() == searchDatabaseJButton || 
+                        event.getSource() == searchBar)
                 {
                     searchByName();
                 }
@@ -242,6 +243,7 @@ public class ReservationGUI extends JFrame {
                     dayJComboBox.removeAllItems();
                     dayJComboBox.setModel(new DefaultComboBoxModel(getDaysInMonth(today)));
                 }
+                
             }
             
         }
@@ -500,6 +502,7 @@ public class ReservationGUI extends JFrame {
         
         searchBarLabel = new JLabel("Search Database: ");
         searchBar = new JTextField(20);
+        searchBar.addActionListener(listener);
         searchDatabaseJButton = new JButton("Search");
         comboLabel = new JLabel("Search database by: ");
         searchByComboBox = new JComboBox(comboItems);
