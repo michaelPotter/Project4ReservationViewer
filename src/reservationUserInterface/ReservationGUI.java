@@ -25,6 +25,8 @@ import java.io.*;
 import Calendar.*;
 import java.util.ArrayList;
 import java.util.prefs.Preferences;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -42,12 +44,15 @@ public class ReservationGUI extends JFrame {
     private static JFrame reservationFrame;
     
     // Array of All Reservations
-    private Reservation[] allReservations;
-    private Reservation[] allReservations_SortByCaps;
-    private Reservation[] allReservations_SortByArrival;
+    /**
+     * The 
+     */
+    private Reservation[] allReservations; // all reservations 
+    private Reservation[] allReservations_SortByCaps; // all reservation sorted by caps
+    private Reservation[] allReservations_SortByArrival; // all reservations 
     private Reservation[] allReservations_SortByDeparture;
     
-    // Array of each property, sorted
+    // Array of each property, sorted in parallel to the above arrays
     private String[] allNames;
     private String[] allNamesInCaps;
     private DateAD[] allArrivals;
@@ -122,6 +127,7 @@ public class ReservationGUI extends JFrame {
     //listener
     private final ActionListener listener; // for everything in the club!
     private final ListSelectionListener listListener; // because JList needs a special 
+    private final CaretListener textListener;
     // kind of listener
     
     /**
@@ -248,6 +254,16 @@ public class ReservationGUI extends JFrame {
             
         }
         
+        class TextFieldListener implements CaretListener {
+
+            @Override
+            public void caretUpdate(CaretEvent e)
+            {
+                System.out.println(searchBar.getText());
+            }
+            
+        }
+        
         class ListListener implements ListSelectionListener 
         {
 
@@ -272,6 +288,7 @@ public class ReservationGUI extends JFrame {
         // create Listeners
         listener = new UserSelection();
         listListener = new ListListener();
+        textListener = new TextFieldListener();
         createDatabasePage();
         
         
@@ -503,6 +520,7 @@ public class ReservationGUI extends JFrame {
         searchBarLabel = new JLabel("Search Database: ");
         searchBar = new JTextField(20);
         searchBar.addActionListener(listener);
+        searchBar.addCaretListener(textListener);
         searchDatabaseJButton = new JButton("Search");
         comboLabel = new JLabel("Search database by: ");
         searchByComboBox = new JComboBox(comboItems);
@@ -549,6 +567,11 @@ public class ReservationGUI extends JFrame {
         add(controlPanel);
     }
     
+    /**
+     * Sets the arrays. Sets arrays sorted by name, by name case-insensitive, 
+     * by arrival, or by departure.
+     * @param arrayWithAllReservations 
+     */
     private void setArrays(Reservation[] arrayWithAllReservations) 
     {
         allReservations = arrayWithAllReservations;
@@ -576,6 +599,10 @@ public class ReservationGUI extends JFrame {
         listOfNamesToDisplay = Viewer.removeDuplicates(allNames.clone());
     }
     
+    
+    /**
+     * Searches for reservations that match a name. Case insensitive.
+     */
     private void searchByName()
     {
         String search = searchBar.getText().trim().toUpperCase();
@@ -600,12 +627,19 @@ public class ReservationGUI extends JFrame {
         setDisplayedNames(reservations);
     }
     
+    /**
+     * Displays ALL reservations on the left
+     */
     private void goBackPage()
     {
         setDisplayedNames(allReservations);     
     
     }
     
+    /**
+     * This method displays the given array on the left
+     * @param reservationsToDisplay the array to display
+     */
     private void setDisplayedNames(Reservation[] reservationsToDisplay) {
         listOfNamesToDisplay = Viewer.getNames(reservationsToDisplay);
 
