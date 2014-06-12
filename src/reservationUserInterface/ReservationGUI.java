@@ -99,6 +99,7 @@ public class ReservationGUI extends JFrame {
     private JLabel reservationJLabel;
     private JLabel reservationTitleJLabel;
     private JTextField startSearch;
+    private JButton backButton;  // this is if after they search, they can go back to able to see the all bookings again.
     private JButton searchJButton;
     
     //reservation card
@@ -221,6 +222,11 @@ public class ReservationGUI extends JFrame {
                 {
                     searchByName();
                 }
+                
+                if(event.getSource() == backButton)
+                {
+                    
+                }
                 /**
                  * If the user canges the year or month to search fo
                  */
@@ -267,10 +273,10 @@ public class ReservationGUI extends JFrame {
         //default file obejct = reservatinos.dat
         //file objecct = the default set ups
 
-        //changed this part
         if(defaultFileObject.exists() && fileObject.exists())
         {
         }
+        
         else if(defaultFileObject.exists() && !(fileObject.exists()))
         {
             fileObject = defaultFileObject;
@@ -313,7 +319,7 @@ public class ReservationGUI extends JFrame {
         load.addActionListener(listener);
         setDefault.addActionListener(listener);
     }
-    
+
     /**
      * Simple method to get the number of days in a given month/year
      * using DateAD as an object
@@ -338,6 +344,7 @@ public class ReservationGUI extends JFrame {
      */
     private void createSearchCardLayout()
     {
+        
         searchingJPanel = new JPanel(new BorderLayout());
         searchCardLayoutPanel = new JPanel(new CardLayout());
         searchControlPanel = new JPanel();
@@ -361,6 +368,8 @@ public class ReservationGUI extends JFrame {
         int min = today.getYear() - 2;
         int size = max - min;
         
+        
+        backButton = new JButton("Back"); //maybe we can put an icon for back? 
         startDateJRadioButton = new JRadioButton("Start Date");
         startDateJRadioButton.setSelected(true);
         startDateJRadioButton.addActionListener(listener);
@@ -418,6 +427,7 @@ public class ReservationGUI extends JFrame {
         searchControlPanel.add(databaseName);
         
         //set up search panel
+        searchPanel.add(backButton);
         searchPanel.add(searchBarLabel);
         searchPanel.add(searchBar);
         searchPanel.add(searchDatabaseJButton);
@@ -521,6 +531,8 @@ public class ReservationGUI extends JFrame {
         {
             allNamesInCaps[i] = allNames[i].toUpperCase();
         }
+        ReservationSort.quickSort(allNamesInCaps);
+        // I HAVE SORTED THE ALLNAMESINCAPS ARRAY
         allArrivals = Viewer.getArrivals(allReservations);
         allDepartures = Viewer.getDepartures(allReservations);
         
@@ -529,8 +541,8 @@ public class ReservationGUI extends JFrame {
     
     private void searchByName()
     {
-        // SOMEONE UGHH,, SOMEONE PUT SEARCHBAR.GETTEXT() WHICH IS THE JTEXTFIELD FOR THE SECOND CARD!
         String search = searchBar.getText().toUpperCase();
+        
         Integer[] locations = BinarySearch.searchForAll(allNamesInCaps, search);
         if (locations == null)
         {
@@ -540,8 +552,15 @@ public class ReservationGUI extends JFrame {
         
         currentReservationIndexes = locations;
         
+        //the locations are different from the array of allReservations.
+    
+        
+        
+        
         Reservation[] reservations = Viewer.getReservationsAtLocation(
                 allReservations, locations);
+        
+        // I NEED TO HAVE ARRAY OF RESERVATIONS THAT IS SORTED IN THE SAME WAY AS THE ALL CAPS ARRAY SORTED. 
         
         listOfNamesToDisplay = Viewer.getNames(reservations);
 
@@ -549,5 +568,12 @@ public class ReservationGUI extends JFrame {
         
         reservationJList.setListData(listOfNamesToDisplay);
     }
-
+    
+    private void goBackPage()
+    {
+        
+        
+        
+    
+    }
 }

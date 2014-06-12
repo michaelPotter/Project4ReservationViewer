@@ -96,46 +96,6 @@ public class BinarySearch
             }
         
         }
-        
-        //   ^
-        //   |  
-        //   |
-        //  MINE
-         
-         
-         
-       //michaels
-       // |
-       // |
-       // V 
-        
-        /*
-        final int DOES_NOT_EXIST = -1;
-        int length = endIndex - startIndex;
-        int half = length / 2 + startIndex;
-        int result = array[half].compareTo(searchObject);
-        if (result == 0)
-        {
-            // if the word at index half is equal to the search term
-            return half;
-        }
-        else if (startIndex >= half)
-        {
-            // if the word doesn't exist
-            return DOES_NOT_EXIST;
-        }
-        else if (result < 0)
-        {
-            // if the word at index half is less than the search term
-            startIndex = half;
-        }
-        else
-        {
-            // if the word at index half is more than the search term
-            endIndex = half;
-        }
-        return searchFor(array, searchObject, startIndex, endIndex);
-        */
     }
 
     /**
