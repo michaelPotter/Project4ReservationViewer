@@ -433,10 +433,19 @@ public class ReservationGUI extends JFrame {
         searchControlPanel.add(databaseName);
         
         //set up search panel
+        // This inner panel keeps the searchBar from exploding
+        JPanel innerSearchPanel = new JPanel();
+        innerSearchPanel.add(searchBarLabel);
+        innerSearchPanel.add(searchBar);
+        innerSearchPanel.add(searchDatabaseJButton);
+        searchPanel.add(Box.createHorizontalStrut(5));
         searchPanel.add(backButton);
-        searchPanel.add(searchBarLabel);
-        searchPanel.add(searchBar);
-        searchPanel.add(searchDatabaseJButton);
+        searchPanel.add(Box.createGlue());
+//        searchPanel.add(searchBarLabel);
+//        searchPanel.add(searchBar);
+//        searchPanel.add(searchDatabaseJButton);
+        searchPanel.add(innerSearchPanel);
+        searchPanel.add(Box.createGlue());
         //searchPanel.add(comboLabel);
         //searchPanel.add(searchByComboBox);
         
@@ -465,7 +474,8 @@ public class ReservationGUI extends JFrame {
     {
         searchByComboPanel = new JPanel();
         searchByComboPanel.setBorder(BorderFactory.createLineBorder(Color.black, 1, true));
-        searchPanel = new JPanel(); //flow layout
+        searchPanel = new JPanel(); 
+        searchPanel.setLayout(new BoxLayout(searchPanel, BoxLayout.X_AXIS));
         searchPanel.setBorder(BorderFactory.createLineBorder(Color.black,
                 1, true));
         
