@@ -374,7 +374,7 @@ public class ReservationGUI extends JFrame {
         int size = max - min;
         
         
-        backButton = new JButton("Back"); //maybe we can put an icon for back? 
+        backButton = new JButton("Show all"); //maybe we can put an icon for back? 
         startDateJRadioButton = new JRadioButton("Start Date");
         startDateJRadioButton.setSelected(true);
         startDateJRadioButton.addActionListener(listener);
@@ -425,6 +425,7 @@ public class ReservationGUI extends JFrame {
         searchDatabaseJButton.addActionListener(listener);
         yearJComboBox.addActionListener(listener);
         monthJComboBox.addActionListener(listener);
+        backButton.addActionListener(listener);
         
         //set up search control panel
         searchControlPanel.add(comboLabel);
