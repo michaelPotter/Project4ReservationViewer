@@ -318,37 +318,29 @@ public class ReservationGUI extends JFrame {
      */
     private void createComboBox()
     {
-        comboPanel = new JPanel();
-        String comboItems[] = {"Search","Reservations"};
-//        cardComboBox = new JComboBox(comboItems);
-//        cardComboBox.setEditable(false);
-        //add an item listener
-//        cardComboBox.addActionListener(listener);
-//        comboPanel.add(cardComboBox);
+//        comboPanel = new JPanel();
+//        String comboItems[] = {"Search","Reservations"};
         
-        if(defaultFileObject.exists() && fileObject.exists())
-        {
-            databaseName = new JLabel("Database: " + fileObject.getName());
-        }
-        else if(defaultFileObject.exists())
-        {
-            databaseName = new JLabel("Database: " + defaultFileName);
-        }
+//        if(defaultFileObject.exists() && fileObject.exists())
+//        {
+//            databaseName = new JLabel("Database: " + fileObject.getName());
+//        }
+//        else if(defaultFileObject.exists())
+//        {
+//            databaseName = new JLabel("Database: " + defaultFileName);
+//        }
+//        
+//        else if(fileObject.exists())
+//        {
+//            databaseName = new JLabel("Database: " + fileObject.getName());
+//        }
+//        
+//        else
+//            databaseName = new JLabel("Database: No Database");
         
-        else if(fileObject.exists())
-        {
-            databaseName = new JLabel("Database: " + fileObject.getName());
-        }
-        
-        else
-            databaseName = new JLabel("Database: No Database");
-        
-        //cardButton = new JButton("See Reservations");
-        //cardButton.addActionListener(listener);
-        //comboPanel.add(cardButton);
-        comboPanel.add(databaseName);
+//        comboPanel.add(databaseName);
         //add panel to frame 
-        add(comboPanel);
+//        add(comboPanel);
     }
     /**
      * Simple method to get the number of days in a given month/year
@@ -423,6 +415,24 @@ public class ReservationGUI extends JFrame {
         yearJLabel = new JLabel("Year");
         searchDateJButton = new JButton("Search");
         
+        // Set database name
+        if(defaultFileObject.exists() && fileObject.exists())
+        {
+            databaseName = new JLabel("Database: " + fileObject.getName());
+        }
+        else if(defaultFileObject.exists())
+        {
+            databaseName = new JLabel("Database: " + defaultFileName);
+        }
+        
+        else if(fileObject.exists())
+        {
+            databaseName = new JLabel("Database: " + fileObject.getName());
+        }
+        
+        else
+            databaseName = new JLabel("Database: No Database");
+        
         //listeners
         searchDateJButton.addActionListener(listener);
         searchByComboBox.addActionListener(listener);
@@ -433,6 +443,7 @@ public class ReservationGUI extends JFrame {
         //set up search control panel
         searchControlPanel.add(comboLabel);
         searchControlPanel.add(searchByComboBox);
+        searchControlPanel.add(databaseName);
         
         //set up search panel
         searchPanel.add(searchBarLabel);
@@ -525,7 +536,7 @@ public class ReservationGUI extends JFrame {
         databasePanel.setLayout(new BorderLayout());
         createReservationPage();
         
-        controlPanel.add(comboPanel, BorderLayout.NORTH);
+//        controlPanel.add(comboPanel, BorderLayout.NORTH);
         controlPanel.add(databasePanel, BorderLayout.CENTER);
         add(controlPanel);
     }
