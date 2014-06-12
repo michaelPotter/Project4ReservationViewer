@@ -353,6 +353,8 @@ public class ReservationGUI extends JFrame {
         searchingJPanel = new JPanel(new BorderLayout());
         searchCardLayoutPanel = new JPanel(new CardLayout());
         searchControlPanel = new JPanel();
+        searchControlPanel.setLayout(
+                new BoxLayout(searchControlPanel, BoxLayout.X_AXIS));
         
         //objects
         DateAD today = new DateAD();
@@ -428,9 +430,15 @@ public class ReservationGUI extends JFrame {
         backButton.addActionListener(listener);
         
         //set up search control panel
-        searchControlPanel.add(comboLabel);
-        searchControlPanel.add(searchByComboBox);
         searchControlPanel.add(databaseName);
+        searchControlPanel.add(Box.createGlue());
+        JPanel innerControlPanel = new JPanel();
+        innerControlPanel.add(comboLabel);
+        innerControlPanel.add(searchByComboBox);
+//        searchControlPanel.add(comboLabel);
+//        searchControlPanel.add(searchByComboBox);
+        searchControlPanel.add(innerControlPanel);
+        searchControlPanel.add(Box.createGlue());
         
         //set up search panel
         // This inner panel keeps the searchBar from exploding
