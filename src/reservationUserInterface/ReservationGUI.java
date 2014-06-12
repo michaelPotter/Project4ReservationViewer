@@ -313,35 +313,7 @@ public class ReservationGUI extends JFrame {
         load.addActionListener(listener);
         setDefault.addActionListener(listener);
     }
-    /**
-     * Create the card combobox for switching between cards of the form
-     */
-    private void createComboBox()
-    {
-//        comboPanel = new JPanel();
-//        String comboItems[] = {"Search","Reservations"};
-        
-//        if(defaultFileObject.exists() && fileObject.exists())
-//        {
-//            databaseName = new JLabel("Database: " + fileObject.getName());
-//        }
-//        else if(defaultFileObject.exists())
-//        {
-//            databaseName = new JLabel("Database: " + defaultFileName);
-//        }
-//        
-//        else if(fileObject.exists())
-//        {
-//            databaseName = new JLabel("Database: " + fileObject.getName());
-//        }
-//        
-//        else
-//            databaseName = new JLabel("Database: No Database");
-        
-//        comboPanel.add(databaseName);
-        //add panel to frame 
-//        add(comboPanel);
-    }
+    
     /**
      * Simple method to get the number of days in a given month/year
      * using DateAD as an object
@@ -530,7 +502,6 @@ public class ReservationGUI extends JFrame {
         controlPanel.setLayout(new BorderLayout());
         //add frame controls that persist outside card layout
         createMenuBar();
-        createComboBox();
         
         databasePanel = new JPanel();
         databasePanel.setLayout(new BorderLayout());
