@@ -69,7 +69,6 @@ public class ReservationGUI extends JFrame {
     private JPanel comboPanel;
     private JPanel cardLayoutPanel;
     private JPanel databasePanel; //BorderLayout
-    private JPanel startPagePanel; //Boxlayout?
     private JPanel searchCardLayoutPanel;
     
         //reseration panels
@@ -77,7 +76,6 @@ public class ReservationGUI extends JFrame {
     private JPanel searchControlPanel; //contains combos for date searching
     private JPanel searchByComboPanel; // combobox of search by options
     private JPanel searchPanel; //contains search bar and button
-    private JPanel searchDatePanel; //
     private JPanel reservationPanel; //holds reservations and label
     private JPanel reservationListPanel; //holds list of reservations
     
@@ -89,11 +87,11 @@ public class ReservationGUI extends JFrame {
     private JLabel dayJLabel;
     private JLabel yearJLabel;
     private JButton searchDateJButton;
+    private JRadioButton startDateJRadioButton;
+    private JRadioButton endDateJRadioButton;
+    private ButtonGroup radioGroup;
     
     //start page panels
-    private JPanel title;
-    private JPanel search;
-//    private JPanel buttonPanel;
     private JLabel databaseName;
     
     //search card
@@ -108,7 +106,6 @@ public class ReservationGUI extends JFrame {
     private JButton searchDatabaseJButton;
     private JLabel comboLabel;
     private JComboBox searchByComboBox;
-    private JLabel reservationAreaJLabel;
     private JTextArea reservationTextArea;
     private JList reservationJList;
     
@@ -235,25 +232,6 @@ public class ReservationGUI extends JFrame {
                     allNames = Viewer.getNames(allReservations);
                     reservationJList.setListData(allNames);
                 }
-                
-                
-                //If user selects the cardComboBox
-//                if(event.getSource() == cardComboBox)
-//                {
-//                    CardLayout c1 = (CardLayout) cardLayoutPanel.getLayout();
-//                    c1.show(cardLayoutPanel, cardComboBox.getSelectedItem().toString());
-//                }
-                // If user presses the cardButton
-                if (event.getSource() == cardButton) 
-                {
-                    CardLayout c1 = (CardLayout) cardLayoutPanel.getLayout();
-                    c1.next(cardLayoutPanel);
-                    if (cardButton.getText().equals("See Reservations")) 
-                        cardButton.setText("New Search");
-                    else
-                        cardButton.setText("See Reservations");
-                    
-                }
                 // if user selects a different search method
                 if (event.getSource() == searchByComboBox)
                 {
@@ -281,10 +259,15 @@ public class ReservationGUI extends JFrame {
                         System.out.println(r + ", ");
                     }
                 }
-                //If user selects searchByComboBox
-                if(event.getSource() == searchByComboBox)
+                /**
+                 * If the user canges the year or month to search fo
+                 */
+                if(event.getSource() == yearJComboBox ||
+                        event.getSource() == monthJComboBox)
                 {
-                    
+                    DateAD today = new DateAD();
+                    dayJComboBox.removeAllItems();
+                    dayJComboBox.setModel(new DefaultComboBoxModel(getDaysInMonth(today)));
                 }
             }
             
@@ -407,37 +390,17 @@ public class ReservationGUI extends JFrame {
         //add panel to frame 
         add(comboPanel);
     }
-    
-    
-    
     /**
-     * Creates the start page of ReservationGUI still a work in progress
-     * @return panel (JPanel) panel containing all objects of the start page
+     * Simple method to get the number of days in a given month/year
+     * using DateAD as an object
+     * @param date (date to get the days of month)
+     * @return (int) number of days in indicated month/year
      */
-    private JPanel createSearchPage()
-    {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        reservationJLabel = new JLabel();
-        reservationJLabel.setIcon(new javax.swing.ImageIcon(getClass().
-                getResource("/Doge.jpg")));
-        reservationTitleJLabel = new JLabel("Reservation Database");
-        reservationTitleJLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        startSearch = new JTextField();
-        //startSearch.setMaximumSize(new Dimension(200,20));
-        //set the maximum size at some point
-        searchJButton = new JButton("Search");
-        searchJButton.addActionListener(listener);
-        panel.add(reservationJLabel);
-        panel.add(reservationTitleJLabel);
-        panel.add(startSearch);
-        panel.add(searchJButton);
-        
-        return panel;
-    }
     private String[] getDaysInMonth(DateAD date)
     {
-        int daysInMonth = date.daysInMonth(date.getMonth(), date.getYear());
+        short monthIndex = (short)monthJComboBox.getSelectedIndex();
+        int year = (int)yearJComboBox.getSelectedItem();
+        int daysInMonth = date.daysInMonth(monthIndex, (short)year);
         String[] days = new String[daysInMonth];
         for(int i = 0; i < daysInMonth; i++)
         {
@@ -470,27 +433,30 @@ public class ReservationGUI extends JFrame {
             "November",
             "December",};
         int max = today.getYear() + 10;
-        int min = today.getYear() - 10;
+        int min = today.getYear() - 2;
         int size = max - min;
-        //int[] years = new int[size];
         
-        for(int i = 0; i < size - 1; i++)
-        {
-            
-        }
+        startDateJRadioButton = new JRadioButton("Start Date");
+        startDateJRadioButton.setSelected(true);
+        startDateJRadioButton.addActionListener(listener);
+        endDateJRadioButton = new JRadioButton("End Date");
+        endDateJRadioButton.addActionListener(listener);
+        radioGroup = new ButtonGroup();
+        radioGroup.add(startDateJRadioButton);
+        radioGroup.add(endDateJRadioButton);
         
         monthJComboBox = new JComboBox(months);
-        monthJComboBox.addActionListener(listener);
-        dayJComboBox = new JComboBox(getDaysInMonth(today));
+        monthJComboBox.setSelectedIndex(today.getMonth());
         yearJComboBox = new JComboBox();
-        yearJComboBox.addActionListener(listener);
                 
-        for(int i = 0; i < size - 1; i++)
+        for(int i = 0; i < size + 1; i++)
         {
             yearJComboBox.addItem((min));
             min++;
         }
-        //yearJComboBox.setSelectedItem(Short.toString(today.getYear()));
+        yearJComboBox.setSelectedItem(today.getYear());
+        System.out.println(today.getYear());
+        dayJComboBox = new JComboBox(getDaysInMonth(today));
         monthJLabel = new JLabel("Month");
         dayJLabel = new JLabel("Day");
         yearJLabel = new JLabel("Year");
@@ -500,6 +466,8 @@ public class ReservationGUI extends JFrame {
         searchDateJButton.addActionListener(listener);
         searchByComboBox.addActionListener(listener);
         searchDatabaseJButton.addActionListener(listener);
+        yearJComboBox.addActionListener(listener);
+        monthJComboBox.addActionListener(listener);
         
         //set up search control panel
         searchControlPanel.add(comboLabel);
@@ -520,6 +488,8 @@ public class ReservationGUI extends JFrame {
         searchByComboPanel.add(yearJLabel);
         searchByComboPanel.add(yearJComboBox);
         searchByComboPanel.add(searchDateJButton);
+        searchByComboPanel.add(startDateJRadioButton);
+        searchByComboPanel.add(endDateJRadioButton);
         
         searchCardLayoutPanel.add(searchPanel, "Name");
         searchCardLayoutPanel.add(searchByComboPanel, "Date");
