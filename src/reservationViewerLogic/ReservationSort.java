@@ -43,6 +43,17 @@ public class ReservationSort
     }
     
     /**
+     * Sorts an array of Reservations by their name, case doesn't matter.
+     * @param reservations the array to be sorted 
+     * @return the sorted array
+     */
+    public static Reservation[] sortByNameCaseInsensitive
+        (Reservation[] reservations)
+    {
+        return sort(reservations, BY_NAME_CASE_INSENSITVE);
+    }
+    
+    /**
      * Sorts the array based on the given int value. If the int is a 0, the 
      * array will be sorted by name. If the int is a 1, the array will be 
      * sorted by arrival date. if the int is a 2, the array will be sorted by 
@@ -53,30 +64,41 @@ public class ReservationSort
      */
     private static Reservation[] sort(Reservation[] array, int sortBy) {
         // run the entire array
-        for (int i = 0; i < array.length; i++) {
+        for (int i = 0; i < array.length; i++) 
+        {
             int lowest = i;
             // run starting from i to find the lowest value
-            for (int j = i; j < array.length; j++) {
+            for (int j = i; j < array.length; j++) 
+            {
                 boolean lessThan = false;
                 
                 // compare based on sortBy variable
-                if (sortBy == BY_NAME) {
+                if (sortBy == BY_NAME) 
+                {
                     String firstName = array[i].getName();
                     String secondName = array[j].getName();
                     if (secondName.compareTo(firstName) < 0)
                         lessThan = true;
-                } else if (sortBy == BY_ARRIVAL)
+                } 
+                else if (sortBy == BY_ARRIVAL)
                 {
                     DateAD firstDate = array[i].getArrivalDate();
                     DateAD secondDate = array[j].getArrivalDate();
                     if (secondDate.compareTo(firstDate) < 0)
                         lessThan = true;
                 }
-                else
+                else if (sortBy == BY_DEPARTURE)
                 {
                     DateAD firstDate = array[j].getDepartureDate();
                     DateAD secondDate = array[j].getDepartureDate();
                     if (secondDate.compareTo(firstDate) < 0)
+                        lessThan = true;
+                }
+                else if (sortBy == BY_NAME_CASE_INSENSITVE) 
+                {
+                    String firstName = array[i].getName().toUpperCase();
+                    String secondName = array[i].getName().toUpperCase();
+                    if (secondName.compareTo(firstName) < 0)
                         lessThan = true;
                 }
                 
@@ -263,4 +285,5 @@ public class ReservationSort
     private static final int BY_NAME = 0;
     private static final int BY_ARRIVAL = 1;
     private static final int BY_DEPARTURE = 2;
+    private static final int BY_NAME_CASE_INSENSITVE = 3;
 }
