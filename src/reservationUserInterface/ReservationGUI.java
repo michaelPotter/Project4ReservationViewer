@@ -43,6 +43,11 @@ public class ReservationGUI extends JFrame {
     
     // Array of All Reservations
     private Reservation[] allReservations;
+    private Reservation[] allReservations_SortByCaps;
+    private Reservation[] allReservations_SortByArrival;
+    private Reservation[] allReservations_SortByDeparture;
+    
+    // Array of each property, sorted
     private String[] allNames;
     private String[] allNamesInCaps;
     private DateAD[] allArrivals;
@@ -525,16 +530,26 @@ public class ReservationGUI extends JFrame {
     private void setArrays(Reservation[] arrayWithAllReservations) 
     {
         allReservations = arrayWithAllReservations;
+        allReservations_SortByCaps = ReservationSort.sortByNameCaseInsensitive(
+                allReservations.clone());
+        allReservations_SortByArrival = ReservationSort.sortByArrival(
+                allReservations.clone());
+        allReservations_SortByDeparture = ReservationSort.sortByDeparture(
+                allReservations.clone());
+        
         allNames = Viewer.getNames(allReservations);
+        
         allNamesInCaps = new String[allNames.length];
         for (int i = 0; i < allNames.length; i++) 
         {
             allNamesInCaps[i] = allNames[i].toUpperCase();
         }
         ReservationSort.quickSort(allNamesInCaps);
-        // I HAVE SORTED THE ALLNAMESINCAPS ARRAY
+        
         allArrivals = Viewer.getArrivals(allReservations);
+        ReservationSort.quickSort(allArrivals);
         allDepartures = Viewer.getDepartures(allReservations);
+        ReservationSort.quickSort(allDepartures);
         
         listOfNamesToDisplay = Viewer.removeDuplicates(allNames.clone());
     }
@@ -562,17 +577,20 @@ public class ReservationGUI extends JFrame {
         
         // I NEED TO HAVE ARRAY OF RESERVATIONS THAT IS SORTED IN THE SAME WAY AS THE ALL CAPS ARRAY SORTED. 
         
-        listOfNamesToDisplay = Viewer.getNames(reservations);
-
-        listOfNamesToDisplay = Viewer.removeDuplicates(listOfNamesToDisplay);
-        
-        reservationJList.setListData(listOfNamesToDisplay);
+        setDisplayedNames(reservations);
     }
     
     private void goBackPage()
     {
-        setArrays(allReservations);
-        reservationJList.setListData(listOfNamesToDisplay);       
+        setDisplayedNames(allReservations);     
     
+    }
+    
+    private void setDisplayedNames(Reservation[] reservationsToDisplay) {
+        listOfNamesToDisplay = Viewer.getNames(reservationsToDisplay);
+
+        listOfNamesToDisplay = Viewer.removeDuplicates(listOfNamesToDisplay);
+        
+        reservationJList.setListData(listOfNamesToDisplay);
     }
 }
