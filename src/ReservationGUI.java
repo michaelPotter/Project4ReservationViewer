@@ -239,21 +239,7 @@ public class ReservationGUI extends JFrame {
                 //If user searches also searchDateJButton needs to be implemented
                 if(event.getSource() == searchDatabaseJButton)
                 {
-                    // SOMEONE UGHH,, SOMEONE PUT SEARCHBAR.GETTEXT() WHICH IS THE JTEXTFIELD FOR THE SECOND CARD!
-                    String search = searchBar.getText();
-                    Integer[] locations = BinarySearch.searchForAll(allNames,
-                            search);
-                    if(locations == null)
-                    {
-                        JOptionPane.showMessageDialog(null, "Search is not found.");
-                        return;
-                    }
-                   
-                    selectedReservations = Viewer.getReservationsAtLocation(
-                            allReservations, locations);
-                    for (Reservation r : selectedReservations) {
-                        System.out.println(r + ", ");
-                    }
+                    searchByName();
                 }
                 //If user selects searchByComboBox
                 if(event.getSource() == searchByComboBox)
@@ -584,5 +570,27 @@ public class ReservationGUI extends JFrame {
         allDepartures = Viewer.getDepartures(allReservations);
     }
     
-    
+    private void searchByName()
+    {
+        // SOMEONE UGHH,, SOMEONE PUT SEARCHBAR.GETTEXT() WHICH IS THE JTEXTFIELD FOR THE SECOND CARD!
+        String search = searchBar.getText().toUpperCase();
+        Integer[] locations = BinarySearch.searchForAll(allNames, search);
+        if (locations == null)
+        {
+            JOptionPane.showMessageDialog(null, "Search is not found.");
+            return;
+        }
+        
+        currentReservationIndexes = locations;
+        
+        Reservation[] reservations = Viewer.getReservationsAtLocation(
+                allReservations, locations);
+        
+        listOfNamesToDisplay = Viewer.getNames(reservations);
+
+        listOfNamesToDisplay = 
+                (String[]) Viewer.removeDuplicates(listOfNamesToDisplay);
+        reservationJList.setListData(listOfNamesToDisplay);
+    }
+
 }
