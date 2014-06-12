@@ -19,7 +19,8 @@ public class ReservationSort
      * @param reservations the array to be sorted 
      * @return the sorted array
      */
-    public static Reservation[] sortByName(Reservation[] reservations) {
+    public static Reservation[] sortByName(Reservation[] reservations)
+    {
         return sort(reservations, BY_NAME);
     }
     
@@ -101,6 +102,163 @@ public class ReservationSort
         array[from] = array[to];
         array[to] = hold;
     }
+    
+     public static void quickSort(Comparable[] array) 
+            throws java.lang.ArrayIndexOutOfBoundsException
+    {
+        if(array.length == 0)
+             throw new ArrayIndexOutOfBoundsException();
+        quickSort(array, 0, array.length -1);
+    }
+    
+    /**
+     * It will call the partition method and recursively call itself until it
+     * the elements sorted are less than 4, then it is going to sort them
+     * by insertion sort
+     * 
+     * @param array a Comparable array which will be sorted
+     * @param from the starting index
+     * @param to the end index of the array
+     * @throws java.lang.ArrayIndexOutOfBoundsException if indices not in array
+     */
+    public static void quickSort(Comparable[] array, int from, int to)
+            throws java.lang.ArrayIndexOutOfBoundsException
+    {
+        if(array.length == 0)
+             throw new ArrayIndexOutOfBoundsException();
+        if(!(to-from < MIN_NUM_FOR_PARTITION))
+        {
+            int index = partition(array, from, to);
+            quickSort(array, from, index - 1);
+            quickSort(array, index + 1, to);
+        }
+        else
+            insertionSort(array, from, to);
+    }
+    
+    /**
+     * It will sort the comparable array using insertion sort
+     * 
+     * @param array A comparable array which will be sorted by insertion sort
+     * @param from  The starting index of the array
+     * @param to    the end index of the array
+     * @throws java.lang.ArrayIndexOutOfBoundsException if indeces not in array
+     */
+    public static void insertionSort(Comparable[] array, int from, int to)
+            throws java.lang.ArrayIndexOutOfBoundsException 
+    {
+        if(array.length == 0)
+             throw new ArrayIndexOutOfBoundsException();
+        Comparable temp;
+        for(int i = from + 1; i <= to; i++)
+        {
+            temp = array[i];
+            int j = 0;
+            for(j = i; j > from; j--)
+            {
+                if(temp.compareTo(array[j - 1]) < 0)
+                    array[j] = array[j - 1];
+                else
+                    break;
+            }
+            array[j] = temp;
+        }
+    }
+    
+    /**
+     * It will first sort middle first and last of the array, moves data around
+     * the pivot value, and returns pivot index.
+     * 
+     * @param array A comparable array to be called in partition
+     * @param from The starting index of the array
+     * @param to the last index of the array
+     * @return returns the pivot index after being partitioned
+     * @throws java.lang.ArrayIndexOutOfBoundsException if indeces not in array
+     */
+    private static int partition(Comparable[] array, int from, int to)
+            throws java.lang.ArrayIndexOutOfBoundsException 
+    {
+        if(array.length == 0)
+             throw new ArrayIndexOutOfBoundsException();
+        int pivot;
+        pivot = (from + to) / 2;
+        sortFirstMiddleLast(array, from, pivot, to);
+        swap(array, pivot, to - 1);
+        pivot = to - 1;
+        
+        int i = from + 1;
+        int j = pivot - 1;
+        
+        //Infinite loop until i is bigger than j
+	for ( ; ; )
+        {
+            while(array[i].compareTo(array[pivot]) < 0)
+            {
+                ++i;
+            }
+            while(array[j].compareTo(array[pivot]) > 0)
+            {
+                --j;
+            }
+            
+            if(i < j)
+            {
+                swap(array, i, j);
+                ++i;
+                --j;
+            }
+            else 
+                break;
+        }
+        
+        swap(array, i, pivot);
+        pivot = i;
+        return pivot;
+    }
+    
+    /**
+     * It will swap two elements inside the array
+     * 
+     * @param array A comparable array that two elements of them will be swapped
+     * @param from The first element that later be swapped with the second 
+     *              element
+     * @param to The second element to be swapped with the first one.
+     * @throws java.lang.ArrayIndexOutOfBoundsException if indices not in array
+     */
+    private static void swap(Comparable[] array, int from, int to)
+            throws java.lang.ArrayIndexOutOfBoundsException 
+    {
+        if(array.length == 0)
+             throw new ArrayIndexOutOfBoundsException();
+        Comparable temp = array[from];
+        array[from] = array[to];
+        array[to] = temp;
+    }
+    
+    /**
+     * It will sort the first, middle and last elements inside the array
+     * 
+     * @param array A comparable array that its first, middle and last will be 
+     *              sorted 
+     * @param from The first index of the array
+     * @param mid the middle index of the array
+     * @param to the last index of the array
+     * @throws java.lang.ArrayIndexOutOfBoundsException if indeces not in array 
+     */
+    private static void sortFirstMiddleLast(Comparable[] array, int from, 
+            int mid, int to) throws java.lang.ArrayIndexOutOfBoundsException
+    {   
+        if(array.length == 0)
+             throw new ArrayIndexOutOfBoundsException();
+        if(array[from].compareTo(array[mid]) > 0)
+            swap(array, from, mid);
+        if(array[mid].compareTo(array[to]) > 0)
+            swap(array, mid, to);
+        if(array[from].compareTo(array[mid]) > 0)
+            swap(array, from, mid);
+    }
+    
+    private static final int MIN_NUM_FOR_PARTITION = 4;
     
     private static final int BY_NAME = 0;
     private static final int BY_ARRIVAL = 1;
