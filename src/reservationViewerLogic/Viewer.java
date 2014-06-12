@@ -11,6 +11,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -210,9 +211,9 @@ public class Viewer {
             return null;
     }
     
-    public static Comparable[] removeDuplicates(Comparable[] array) {
+    public static String[] removeDuplicates(String[] array) {
         int i = 0;
-        ArrayList<Comparable> list = new ArrayList<>();
+        ArrayList<String> list = new ArrayList<>(Arrays.asList(array));
         while (i < list.size() - 1) {
             if (list.get(i).equals(list.get(i + 1))) {
                 list.remove(i + 1);
@@ -220,7 +221,7 @@ public class Viewer {
                 i++;
             }
         }
-        Comparable[] arrayNoDuplicates = list.toArray(new Comparable[0]);
+        String[] arrayNoDuplicates = list.toArray(new String[0]);
         return arrayNoDuplicates;
     }
     

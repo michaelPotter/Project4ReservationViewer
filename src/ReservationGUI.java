@@ -180,7 +180,7 @@ public class ReservationGUI extends JFrame {
                     
                     allReservations = Viewer.readDatabase(fileObject);
                     setArrays(allReservations);
-                    reservationJList.setListData(allNames);
+                    reservationJList.setListData(listOfNamesToDisplay);
                 }
                 
                 if(event.getSource() == setDefault)
@@ -207,7 +207,7 @@ public class ReservationGUI extends JFrame {
                     
                     allReservations = Viewer.readDatabase(fileObject);
                     setArrays(allReservations);
-                    reservationJList.setListData(allNames);
+                    reservationJList.setListData(listOfNamesToDisplay);
                 }
                 
                 
@@ -262,6 +262,7 @@ public class ReservationGUI extends JFrame {
                 for (int i = 0; i < allReservations.length; i++) {
                     if (allReservations[i].getName().equals(selectedName)) {
                         output += allReservations[i].toString();
+                        output += String.format("%n");
                     }
                 }
                 reservationTextArea.setText(output);
@@ -292,7 +293,7 @@ public class ReservationGUI extends JFrame {
         
         allReservations = Viewer.readDatabase(fileObject);
         setArrays(allReservations);
-        reservationJList.setListData(allNames);
+        reservationJList.setListData(listOfNamesToDisplay);
     }
     
     /**
@@ -565,6 +566,8 @@ public class ReservationGUI extends JFrame {
         }
         allArrivals = Viewer.getArrivals(allReservations);
         allDepartures = Viewer.getDepartures(allReservations);
+        
+        listOfNamesToDisplay = Viewer.removeDuplicates(allNames.clone());
     }
     
     private void searchByName()
@@ -585,11 +588,8 @@ public class ReservationGUI extends JFrame {
         
         listOfNamesToDisplay = Viewer.getNames(reservations);
 
-        Comparable[] a = Viewer.removeDuplicates(listOfNamesToDisplay);
-        if (a instanceof String[]) 
-        {
-            listOfNamesToDisplay = (String[]) a;
-        }
+        listOfNamesToDisplay = Viewer.removeDuplicates(listOfNamesToDisplay);
+        
         reservationJList.setListData(listOfNamesToDisplay);
     }
 
