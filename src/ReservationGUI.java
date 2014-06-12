@@ -115,8 +115,8 @@ public class ReservationGUI extends JFrame {
     private Preferences prefs; 
     
     //listener
-    private ActionListener listener; // for everything in the club!
-    private ListSelectionListener listListener; // because JList needs a special 
+    private final ActionListener listener; // for everything in the club!
+    private final ListSelectionListener listListener; // because JList needs a special 
     // kind of listener
     
     /**
@@ -291,7 +291,7 @@ public class ReservationGUI extends JFrame {
         }
         
         allReservations = Viewer.readDatabase(fileObject);
-        allNames = Viewer.getNames(allReservations);
+        setArrays(allReservations);
         reservationJList.setListData(allNames);
     }
     
@@ -394,7 +394,7 @@ public class ReservationGUI extends JFrame {
     }
     private String[] getDaysInMonth(DateAD date)
     {
-        int daysInMonth = date.daysInMonth(date.getMonth(), date.getYear());
+        int daysInMonth = DateAD.daysInMonth(date.getMonth(), date.getYear());
         String[] days = new String[daysInMonth];
         for(int i = 0; i < daysInMonth; i++)
         {
@@ -571,7 +571,7 @@ public class ReservationGUI extends JFrame {
     {
         // SOMEONE UGHH,, SOMEONE PUT SEARCHBAR.GETTEXT() WHICH IS THE JTEXTFIELD FOR THE SECOND CARD!
         String search = searchBar.getText().toUpperCase();
-        Integer[] locations = BinarySearch.searchForAll(allNames, search);
+        Integer[] locations = BinarySearch.searchForAll(allNamesInCaps, search);
         if (locations == null)
         {
             JOptionPane.showMessageDialog(null, "Search is not found.");
@@ -585,8 +585,11 @@ public class ReservationGUI extends JFrame {
         
         listOfNamesToDisplay = Viewer.getNames(reservations);
 
-        listOfNamesToDisplay = 
-                (String[]) Viewer.removeDuplicates(listOfNamesToDisplay);
+        Comparable[] a = Viewer.removeDuplicates(listOfNamesToDisplay);
+        if (a instanceof String[]) 
+        {
+            listOfNamesToDisplay = (String[]) a;
+        }
         reservationJList.setListData(listOfNamesToDisplay);
     }
 
