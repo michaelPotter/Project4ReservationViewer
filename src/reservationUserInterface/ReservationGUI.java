@@ -225,7 +225,7 @@ public class ReservationGUI extends JFrame {
                 
                 if(event.getSource() == backButton)
                 {
-                    
+                    goBackPage();
                 }
                 /**
                  * If the user canges the year or month to search fo
@@ -571,9 +571,8 @@ public class ReservationGUI extends JFrame {
     
     private void goBackPage()
     {
-        
-        
-        
+        setArrays(allReservations);
+        reservationJList.setListData(listOfNamesToDisplay);       
     
     }
 }
