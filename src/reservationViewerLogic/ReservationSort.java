@@ -75,34 +75,34 @@ public class ReservationSort
                 // compare based on sortBy variable
                 if (sortBy == BY_NAME) 
                 {
-                    String firstName = array[i].getName();
+                    String firstName = array[lowest].getName();
                     String secondName = array[j].getName();
                     if (secondName.compareTo(firstName) < 0)
                         lessThan = true;
                 } 
                 else if (sortBy == BY_ARRIVAL)
                 {
-                    DateAD firstDate = array[i].getArrivalDate();
+                    DateAD firstDate = array[lowest].getArrivalDate();
                     DateAD secondDate = array[j].getArrivalDate();
                     if (secondDate.compareTo(firstDate) < 0)
                         lessThan = true;
                 }
                 else if (sortBy == BY_DEPARTURE)
                 {
-                    DateAD firstDate = array[j].getDepartureDate();
+                    DateAD firstDate = array[lowest].getDepartureDate();
                     DateAD secondDate = array[j].getDepartureDate();
                     if (secondDate.compareTo(firstDate) < 0)
                         lessThan = true;
                 }
                 else if (sortBy == BY_NAME_CASE_INSENSITVE) 
                 {
-                    String firstName = array[i].getName().toUpperCase();
-                    String secondName = array[i].getName().toUpperCase();
+                    String firstName = array[lowest].getName().toUpperCase();
+                    String secondName = array[j].getName().toUpperCase();
                     if (secondName.compareTo(firstName) < 0)
                         lessThan = true;
                 }
                 
-                if (lessThan == false) 
+                if (lessThan == true) 
                     lowest = j;
             }
             

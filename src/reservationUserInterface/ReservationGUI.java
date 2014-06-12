@@ -546,9 +546,9 @@ public class ReservationGUI extends JFrame {
         }
         ReservationSort.quickSort(allNamesInCaps);
         
-        allArrivals = Viewer.getArrivals(allReservations);
+        allArrivals = Viewer.getArrivals(allReservations_SortByArrival);
         ReservationSort.quickSort(allArrivals);
-        allDepartures = Viewer.getDepartures(allReservations);
+        allDepartures = Viewer.getDepartures(allReservations_SortByDeparture);
         ReservationSort.quickSort(allDepartures);
         
         listOfNamesToDisplay = Viewer.removeDuplicates(allNames.clone());
@@ -556,7 +556,7 @@ public class ReservationGUI extends JFrame {
     
     private void searchByName()
     {
-        String search = searchBar.getText().toUpperCase();
+        String search = searchBar.getText().trim().toUpperCase();
         
         Integer[] locations = BinarySearch.searchForAll(allNamesInCaps, search);
         if (locations == null)
@@ -573,10 +573,8 @@ public class ReservationGUI extends JFrame {
         
         
         Reservation[] reservations = Viewer.getReservationsAtLocation(
-                allReservations, locations);
-        
-        // I NEED TO HAVE ARRAY OF RESERVATIONS THAT IS SORTED IN THE SAME WAY AS THE ALL CAPS ARRAY SORTED. 
-        
+                allReservations_SortByCaps, locations);
+                
         setDisplayedNames(reservations);
     }
     
