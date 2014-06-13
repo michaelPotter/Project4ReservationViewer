@@ -232,6 +232,7 @@ public class ReservationGUI extends JFrame {
                 if(event.getSource() == backButton)
                 {
                     goBackPage();
+                    searchBar.setText("");
                 }
                 /**
                  * If the user canges the year or month to search fo
@@ -364,7 +365,10 @@ public class ReservationGUI extends JFrame {
         file = new JMenu("File");
         file.setMnemonic(KeyEvent.VK_F);
         load = new JMenuItem("Load Database");
+        load.setToolTipText("Load a different database into the program (.dat)");
         setDefault = new JMenuItem("Set default Database");
+        setDefault.setToolTipText("Change the default database"
+                + " for reservation viewer");
         file.add(load);
         file.add(setDefault);
         menuBar.add(file);
@@ -424,19 +428,29 @@ public class ReservationGUI extends JFrame {
         int size = max - min;
         
         
-        backButton = new JButton("Show all"); //maybe we can put an icon for back? 
+        backButton = new JButton("Show all");
+        backButton.setToolTipText("Display all reservations in"
+                + " the database.");
         startDateJRadioButton = new JRadioButton("Start Date");
+        startDateJRadioButton.setToolTipText("Change the search date"
+                + " option to start date.");
         startDateJRadioButton.setSelected(true);
         startDateJRadioButton.addActionListener(listener);
         endDateJRadioButton = new JRadioButton("End Date");
+        endDateJRadioButton.setToolTipText("Change the search date option"
+                + " to end date.");
         endDateJRadioButton.addActionListener(listener);
-        radioGroup = new ButtonGroup();
+        radioGroup = new ButtonGroup(); //radio group for date radiobuttons
         radioGroup.add(startDateJRadioButton);
         radioGroup.add(endDateJRadioButton);
         
         monthJComboBox = new JComboBox(months);
+        monthJComboBox.setToolTipText("Month of the reservation"
+                + " in the database.");
         monthJComboBox.setSelectedIndex(today.getMonth());
         yearJComboBox = new JComboBox();
+        yearJComboBox.setToolTipText("Year of the reservation"
+                + " in the database.");
                 
         for(int i = 0; i < size + 1; i++)
         {
@@ -446,10 +460,13 @@ public class ReservationGUI extends JFrame {
         yearJComboBox.setSelectedItem(today.getYear());
         System.out.println(today.getYear());
         dayJComboBox = new JComboBox(getDaysInMonth(today));
+        dayJComboBox.setToolTipText("Day of the reservation in the database.");
         monthJLabel = new JLabel("Month");
         dayJLabel = new JLabel("Day");
         yearJLabel = new JLabel("Year");
         searchDateJButton = new JButton("Search");
+        searchDateJButton.setToolTipText("Search the database by the"
+                + " date indicated useing the month, day, and year box's.");
         
         // Set database name
         if(defaultFileObject.exists() && fileObject.exists())
@@ -548,22 +565,32 @@ public class ReservationGUI extends JFrame {
         
         searchBarLabel = new JLabel("Search Database: ");
         searchBar = new JTextField(20);
+        searchBar.setToolTipText("Search the database by name. Field"
+                + " automatically searches the database as you fill it out.");
         searchBar.addActionListener(listener);
         searchBar.addCaretListener(textListener);
         searchDatabaseJButton = new JButton("Search");
+        searchDatabaseJButton.setToolTipText("Click to search the database by"
+                + " the name indicated.");
         comboLabel = new JLabel("Search database by: ");
         searchByComboBox = new JComboBox(comboItems);
+        searchByComboBox.setToolTipText("Switch between searching the"
+                + " database by name, and date.");
         
         createSearchCardLayout();
         
         //set up reservation panel
         reservationTextArea = new JTextArea();
+        reservationTextArea.setToolTipText("Reservation info is displayed"
+                + " here. Click a name on the left to view details!");
         reservationTextArea.setEditable(false);
         reservationTextArea.setFont(new Font("Courier", Font.PLAIN, 14));
         JScrollPane textScroller = new JScrollPane(reservationTextArea);
         reservationPanel.add(textScroller);
         //set up reservationlist panel
         reservationJList = new JList();
+        reservationJList.setToolTipText("List of all names in the database."
+                + " Click a name to display details to the right!");
         reservationJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         reservationJList.addListSelectionListener(listListener);
         JScrollPane listScroller = new JScrollPane(reservationJList);
