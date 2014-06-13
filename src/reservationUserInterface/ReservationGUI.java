@@ -8,6 +8,7 @@ package reservationUserInterface;
  */
 
 import java.awt.BorderLayout;
+import java.awt.print.*;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -225,6 +226,8 @@ public class ReservationGUI extends JFrame {
                 //If user searches also searchDateJButton needs to be implemented
                 if(event.getSource() == printButton)
                 {
+                    PrintUtilities pj = new PrintUtilities(reservationTextArea);
+                    pj.print();
                     //print stuffs
                     System.out.println(reservationTextArea.getText());
                 }
