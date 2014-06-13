@@ -1,13 +1,11 @@
 package reservationUserInterface;
 
-// SUMMARY OF CHANGES
-// SO I USED MY RESERVATION CLASS FROM PROJECT THREE, AND I ALSO USED MY DATABASE FILE WHICH IS DIFFERENT FROM YOURS. THAT IS WHY I NEED TO USE MY RESERVATION CLASS
-// I CHANGED IN THE  BINARY SEACH CLASS. I USED MY VERSION OF BINARY SEARCH. U KNOW IT IS WORKING IF U SEARCH A TERM, IT WILL PRINT OUT ALL 
-// RESULTS IN THE CONSOLE. SO YEAH.. GG
-// update, I polish the interface!!! so labels are working right now.
-// Please don't do anythig to the File object stuffs guys :) Thanks.
-// update, see line 296
-
+/**
+ * SUMMARY OF CHANGES,
+ * ALLOW SEARCH BY DATES
+ * IF SEARCH IS NOT FOUND, CALL GOBACKTOPAGE METHOD
+ * MOVED SHOW ALL BUTTON, SO THAT BOTH SEARCH BY NAMES AND DATES PANEL CAN PRESS IT
+ */
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
@@ -62,7 +60,6 @@ public class ReservationGUI extends JFrame {
     private Reservation[] selectedReservations;
     // This array will contain the indexes of the reservations that match
     // the current search
-    private Integer[] currentReservationIndexes;
     private String[] listOfNamesToDisplay;
     
     //menu bar
@@ -250,6 +247,32 @@ public class ReservationGUI extends JFrame {
                     dayJComboBox.setModel(new DefaultComboBoxModel(getDaysInMonth(today)));
                 }
                 
+                if(startDateJRadioButton.isSelected() && event.getSource() == searchDateJButton)
+                {
+                    // takes in the input and make it into a date ad.
+                    String stringYear = yearJComboBox.getSelectedItem().toString();
+                    short year = Short.parseShort(stringYear);
+                    short month = (short) monthJComboBox.getSelectedIndex();
+                    short day = (short) dayJComboBox.getSelectedIndex();
+                    day += 1;  
+                    DateAD startDate = new DateAD(day, month, year);
+                    searchByArrDate(startDate);
+                    
+                }
+                
+                if(endDateJRadioButton.isSelected() && event.getSource() == searchDateJButton)
+                {
+                    String stringYear = yearJComboBox.getSelectedItem().toString();
+                    short year = Short.parseShort(stringYear);
+                    short month = (short) monthJComboBox.getSelectedIndex();
+                    short day = (short) dayJComboBox.getSelectedIndex();
+                    day += 1;  
+                    DateAD endDate = new DateAD(day, month, year);
+                    searchByDepDate(endDate);
+                    
+                }
+                
+                
             }
             
         }
@@ -395,7 +418,7 @@ public class ReservationGUI extends JFrame {
         int size = max - min;
         
         
-        backButton = new JButton("Show all"); //maybe we can put an icon for back? 
+        backButton = new JButton("Show all"); 
         startDateJRadioButton = new JRadioButton("Start Date");
         startDateJRadioButton.setSelected(true);
         startDateJRadioButton.addActionListener(listener);
@@ -450,14 +473,17 @@ public class ReservationGUI extends JFrame {
         
         //set up search control panel
         searchControlPanel.add(databaseName);
+        searchControlPanel.add(Box.createHorizontalStrut(10));
+        searchControlPanel.add(backButton);
+        searchControlPanel.add(Box.createHorizontalStrut(200));
         searchControlPanel.add(Box.createGlue());
-        JPanel innerControlPanel = new JPanel();
-        innerControlPanel.add(comboLabel);
-        innerControlPanel.add(searchByComboBox);
+        searchControlPanel.add(comboLabel);
+        searchControlPanel.add(searchByComboBox);
 //        searchControlPanel.add(comboLabel);
 //        searchControlPanel.add(searchByComboBox);
-        searchControlPanel.add(innerControlPanel);
+        //searchControlPanel.add(innerControlPanel);
         searchControlPanel.add(Box.createGlue());
+        searchControlPanel.add(Box.createHorizontalStrut(200));
         
         //set up search panel
         // This inner panel keeps the searchBar from exploding
@@ -465,18 +491,14 @@ public class ReservationGUI extends JFrame {
         innerSearchPanel.add(searchBarLabel);
         innerSearchPanel.add(searchBar);
         innerSearchPanel.add(searchDatabaseJButton);
-        searchPanel.add(Box.createHorizontalStrut(5));
-        searchPanel.add(backButton);
+        searchPanel.add(Box.createHorizontalStrut(100));
+        //searchPanel.add(backButton);
         searchPanel.add(Box.createGlue());
-//        searchPanel.add(searchBarLabel);
-//        searchPanel.add(searchBar);
-//        searchPanel.add(searchDatabaseJButton);
         searchPanel.add(innerSearchPanel);
         searchPanel.add(Box.createGlue());
-        //searchPanel.add(comboLabel);
-        //searchPanel.add(searchByComboBox);
         
         //set up searchby panel
+        
         searchByComboPanel.add(monthJLabel);
         searchByComboPanel.add(monthJComboBox);
         searchByComboPanel.add(dayJLabel);
@@ -486,6 +508,7 @@ public class ReservationGUI extends JFrame {
         searchByComboPanel.add(searchDateJButton);
         searchByComboPanel.add(startDateJRadioButton);
         searchByComboPanel.add(endDateJRadioButton);
+
         
         searchCardLayoutPanel.add(searchPanel, "Name");
         searchCardLayoutPanel.add(searchByComboPanel, "Date");
@@ -524,6 +547,7 @@ public class ReservationGUI extends JFrame {
         searchDatabaseJButton = new JButton("Search");
         comboLabel = new JLabel("Search database by: ");
         searchByComboBox = new JComboBox(comboItems);
+        
         
         createSearchCardLayout();
         
@@ -599,6 +623,43 @@ public class ReservationGUI extends JFrame {
         listOfNamesToDisplay = Viewer.removeDuplicates(allNames.clone());
     }
     
+    /**
+     * the name says it all :)
+     * @param dateToBeSearched 
+     */
+    private void searchByArrDate(DateAD dateToBeSearched)
+    {
+        Integer[] locations = BinarySearch.searchForAll(allArrivals, dateToBeSearched);
+         if(locations == null)
+                    {
+                        JOptionPane.showMessageDialog(null, "Search Not Found");
+                        goBackPage();
+                        return;
+                    }
+                    
+                    Reservation[] reservations = Viewer.getReservationsAtLocation(allReservations_SortByArrival, locations);
+                    setDisplayedNames(reservations);
+
+    }
+    
+    /**
+     * Name says it all -_-
+     * @param dateToBeSearched 
+     */
+    private void searchByDepDate(DateAD dateToBeSearched)
+    {
+        Integer[] locations = BinarySearch.searchForAll(allDepartures, dateToBeSearched);
+         if(locations == null)
+                    {
+                        JOptionPane.showMessageDialog(null, "Search Not Found");
+                        goBackPage();
+                        return;
+                    }
+                    
+                    Reservation[] reservations = Viewer.getReservationsAtLocation(allReservations_SortByDeparture, locations);
+                    setDisplayedNames(reservations);
+    
+    }
     
     /**
      * Searches for reservations that match a name. Case insensitive.
@@ -610,16 +671,10 @@ public class ReservationGUI extends JFrame {
         Integer[] locations = BinarySearch.searchForAll(allNamesInCaps, search);
         if (locations == null)
         {
-            JOptionPane.showMessageDialog(null, "Search is not found.");
+            JOptionPane.showMessageDialog(null, "Search not found.");
+            goBackPage();
             return;
         }
-        
-        currentReservationIndexes = locations;
-        
-        //the locations are different from the array of allReservations.
-    
-        
-        
         
         Reservation[] reservations = Viewer.getReservationsAtLocation(
                 allReservations_SortByCaps, locations);
@@ -632,8 +687,7 @@ public class ReservationGUI extends JFrame {
      */
     private void goBackPage()
     {
-        setDisplayedNames(allReservations);     
-    
+        setDisplayedNames(allReservations);
     }
     
     /**
