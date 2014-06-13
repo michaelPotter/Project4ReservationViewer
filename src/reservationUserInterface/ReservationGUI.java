@@ -56,6 +56,7 @@ public class ReservationGUI extends JFrame {
     private DateAD[] allArrivals;
     private DateAD[] allDepartures;
     
+    private String[] startsWithNames; //list to hold all starts with names
     // These arrays will change depending on search specifications
     private Reservation[] selectedReservations;
     // This array will contain the indexes of the reservations that match
@@ -71,11 +72,8 @@ public class ReservationGUI extends JFrame {
     private JMenuItem load;
     private JMenuItem setDefault; 
 //    private JComboBox cardComboBox;
-    private JButton cardButton;
     //card panels
     private JPanel controlPanel;
-    private JPanel comboPanel;
-    private JPanel cardLayoutPanel;
     private JPanel databasePanel; //BorderLayout
     private JPanel searchCardLayoutPanel;
     
@@ -103,11 +101,7 @@ public class ReservationGUI extends JFrame {
     private JLabel databaseName;
     
     //search card
-    private JLabel reservationJLabel;
-    private JLabel reservationTitleJLabel;
-    private JTextField startSearch;
     private JButton backButton;  // this is if after they search, they can go back to able to see the all bookings again.
-    private JButton searchJButton;
     
     //reservation card
     private JLabel searchBarLabel;
@@ -235,6 +229,7 @@ public class ReservationGUI extends JFrame {
                 if(event.getSource() == backButton)
                 {
                     goBackPage();
+                    searchBar.setText("");
                 }
                 /**
                  * If the user canges the year or month to search fo
@@ -276,13 +271,48 @@ public class ReservationGUI extends JFrame {
             }
             
         }
-        
+        /**
+         * Listener to determine if/what a user is typing in the 
+         * search text field and find the names that starts with it
+         * in the database
+         */
         class TextFieldListener implements CaretListener {
 
             @Override
             public void caretUpdate(CaretEvent e)
             {
-                System.out.println(searchBar.getText());
+                //get the names of the users in the database
+                String startsWith = searchBar.getText().toUpperCase();
+                if(!startsWith.equals(""))
+                {
+                    ArrayList names = new ArrayList();
+                    int stringLength = startsWith.length();
+                    for(int i = 0; i < allNames.length; i++)
+                    {
+                        //get a substring of the value at i
+                        if(!(allNames[i].length() < stringLength))
+                        {
+                             String sub = allNames[i].substring(0,
+                                stringLength).toUpperCase();
+                             
+                            if(startsWith.compareTo(sub) == 0)
+                            {
+                                names.add(allNames[i]);
+                            }
+                        }
+                    }
+                    startsWithNames = new String[names.size()];
+                    for(int i = 0; i < names.size(); i++)
+                    {
+                        startsWithNames[i] = names.get(i).toString();
+                    }
+                    reservationJList.setListData(startsWithNames);
+                }
+                else
+                {
+                    //display all reservations
+                    goBackPage();
+                }
             }
             
         }
@@ -358,7 +388,10 @@ public class ReservationGUI extends JFrame {
         file = new JMenu("File");
         file.setMnemonic(KeyEvent.VK_F);
         load = new JMenuItem("Load Database");
+        load.setToolTipText("Load a different database into the program (.dat)");
         setDefault = new JMenuItem("Set default Database");
+        setDefault.setToolTipText("Change the default database"
+                + " for reservation viewer");
         file.add(load);
         file.add(setDefault);
         menuBar.add(file);
@@ -418,19 +451,33 @@ public class ReservationGUI extends JFrame {
         int size = max - min;
         
         
+<<<<<<< HEAD
         backButton = new JButton("Show all"); 
+=======
+        backButton = new JButton("Show all");
+        backButton.setToolTipText("Display all reservations in"
+                + " the database.");
+>>>>>>> 69493a6fdf922df66ac7b02eb0041580444027c6
         startDateJRadioButton = new JRadioButton("Start Date");
+        startDateJRadioButton.setToolTipText("Change the search date"
+                + " option to start date.");
         startDateJRadioButton.setSelected(true);
         startDateJRadioButton.addActionListener(listener);
         endDateJRadioButton = new JRadioButton("End Date");
+        endDateJRadioButton.setToolTipText("Change the search date option"
+                + " to end date.");
         endDateJRadioButton.addActionListener(listener);
-        radioGroup = new ButtonGroup();
+        radioGroup = new ButtonGroup(); //radio group for date radiobuttons
         radioGroup.add(startDateJRadioButton);
         radioGroup.add(endDateJRadioButton);
         
         monthJComboBox = new JComboBox(months);
+        monthJComboBox.setToolTipText("Month of the reservation"
+                + " in the database.");
         monthJComboBox.setSelectedIndex(today.getMonth());
         yearJComboBox = new JComboBox();
+        yearJComboBox.setToolTipText("Year of the reservation"
+                + " in the database.");
                 
         for(int i = 0; i < size + 1; i++)
         {
@@ -440,10 +487,13 @@ public class ReservationGUI extends JFrame {
         yearJComboBox.setSelectedItem(today.getYear());
         System.out.println(today.getYear());
         dayJComboBox = new JComboBox(getDaysInMonth(today));
+        dayJComboBox.setToolTipText("Day of the reservation in the database.");
         monthJLabel = new JLabel("Month");
         dayJLabel = new JLabel("Day");
         yearJLabel = new JLabel("Year");
         searchDateJButton = new JButton("Search");
+        searchDateJButton.setToolTipText("Search the database by the"
+                + " date indicated useing the month, day, and year box's.");
         
         // Set database name
         if(defaultFileObject.exists() && fileObject.exists())
@@ -542,23 +592,33 @@ public class ReservationGUI extends JFrame {
         
         searchBarLabel = new JLabel("Search Database: ");
         searchBar = new JTextField(20);
+        searchBar.setToolTipText("Search the database by name. Field"
+                + " automatically searches the database as you fill it out.");
         searchBar.addActionListener(listener);
         searchBar.addCaretListener(textListener);
         searchDatabaseJButton = new JButton("Search");
+        searchDatabaseJButton.setToolTipText("Click to search the database by"
+                + " the name indicated.");
         comboLabel = new JLabel("Search database by: ");
         searchByComboBox = new JComboBox(comboItems);
+        searchByComboBox.setToolTipText("Switch between searching the"
+                + " database by name, and date.");
         
         
         createSearchCardLayout();
         
         //set up reservation panel
         reservationTextArea = new JTextArea();
+        reservationTextArea.setToolTipText("Reservation info is displayed"
+                + " here. Click a name on the left to view details!");
         reservationTextArea.setEditable(false);
         reservationTextArea.setFont(new Font("Courier", Font.PLAIN, 14));
         JScrollPane textScroller = new JScrollPane(reservationTextArea);
         reservationPanel.add(textScroller);
         //set up reservationlist panel
         reservationJList = new JList();
+        reservationJList.setToolTipText("List of all names in the database."
+                + " Click a name to display details to the right!");
         reservationJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         reservationJList.addListSelectionListener(listListener);
         JScrollPane listScroller = new JScrollPane(reservationJList);
