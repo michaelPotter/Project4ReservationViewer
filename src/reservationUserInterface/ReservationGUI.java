@@ -58,6 +58,7 @@ public class ReservationGUI extends JFrame {
     private DateAD[] allArrivals;
     private DateAD[] allDepartures;
     
+    private String[] startsWithNames; //list to hold all starts with names
     // These arrays will change depending on search specifications
     private Reservation[] selectedReservations;
     // This array will contain the indexes of the reservations that match
@@ -74,11 +75,8 @@ public class ReservationGUI extends JFrame {
     private JMenuItem load;
     private JMenuItem setDefault; 
 //    private JComboBox cardComboBox;
-    private JButton cardButton;
     //card panels
     private JPanel controlPanel;
-    private JPanel comboPanel;
-    private JPanel cardLayoutPanel;
     private JPanel databasePanel; //BorderLayout
     private JPanel searchCardLayoutPanel;
     
@@ -106,11 +104,7 @@ public class ReservationGUI extends JFrame {
     private JLabel databaseName;
     
     //search card
-    private JLabel reservationJLabel;
-    private JLabel reservationTitleJLabel;
-    private JTextField startSearch;
     private JButton backButton;  // this is if after they search, they can go back to able to see the all bookings again.
-    private JButton searchJButton;
     
     //reservation card
     private JLabel searchBarLabel;
@@ -253,13 +247,48 @@ public class ReservationGUI extends JFrame {
             }
             
         }
-        
+        /**
+         * Listener to determine if/what a user is typing in the 
+         * search text field and find the names that starts with it
+         * in the database
+         */
         class TextFieldListener implements CaretListener {
 
             @Override
             public void caretUpdate(CaretEvent e)
             {
-                System.out.println(searchBar.getText());
+                //get the names of the users in the database
+                String startsWith = searchBar.getText().toUpperCase();
+                if(!startsWith.equals(""))
+                {
+                    ArrayList names = new ArrayList();
+                    int stringLength = startsWith.length();
+                    for(int i = 0; i < allNames.length; i++)
+                    {
+                        //get a substring of the value at i
+                        if(!(allNames[i].length() < stringLength))
+                        {
+                             String sub = allNames[i].substring(0,
+                                stringLength).toUpperCase();
+                             
+                            if(startsWith.compareTo(sub) == 0)
+                            {
+                                names.add(allNames[i]);
+                            }
+                        }
+                    }
+                    startsWithNames = new String[names.size()];
+                    for(int i = 0; i < names.size(); i++)
+                    {
+                        startsWithNames[i] = names.get(i).toString();
+                    }
+                    reservationJList.setListData(startsWithNames);
+                }
+                else
+                {
+                    //display all reservations
+                    goBackPage();
+                }
             }
             
         }
