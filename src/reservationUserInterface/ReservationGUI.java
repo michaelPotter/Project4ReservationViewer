@@ -21,6 +21,7 @@ import filesort.Reservation;
 import reservationViewerLogic.*;
 import java.io.*;
 import Calendar.*;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.prefs.Preferences;
 import javax.swing.event.CaretEvent;
@@ -106,7 +107,7 @@ public class ReservationGUI extends JFrame {
     //reservation card
     private JLabel searchBarLabel;
     private JTextField searchBar;
-    private JButton searchDatabaseJButton;
+    private JButton printButton;
     private JLabel comboLabel;
     private JComboBox searchByComboBox;
     private JTextArea reservationTextArea;
@@ -222,12 +223,12 @@ public class ReservationGUI extends JFrame {
                             (String)searchByComboBox.getSelectedItem());
                 }
                 //If user searches also searchDateJButton needs to be implemented
-                if(event.getSource() == searchDatabaseJButton || 
-                        event.getSource() == searchBar)
+                if(event.getSource() == printButton)
                 {
-                    searchByName();
+                    //print stuffs
+                    System.out.println(reservationTextArea.getText());
                 }
-                
+
                 if(event.getSource() == backButton)
                 {
                     goBackPage();
@@ -244,7 +245,7 @@ public class ReservationGUI extends JFrame {
                     dayJComboBox.setModel(new DefaultComboBoxModel(getDaysInMonth(today)));
                 }
                 
-                if(startDateJRadioButton.isSelected() || endDateJRadioButton.isSelected())
+                if((startDateJRadioButton.isSelected() || endDateJRadioButton.isSelected()) && searchByComboBox.getSelectedItem() == "Date")
                 {
                     goBackPage();
                 }
@@ -381,6 +382,7 @@ public class ReservationGUI extends JFrame {
         reservationFrame.setTitle("Reservation Viewer");
         reservationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         reservationFrame.setSize(FRAME_WIDTH,FRAME_HEIGHT);
+        reservationFrame.setMinimumSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
         
         //reservationFrame.pack();
         reservationFrame.setVisible(true);
@@ -519,7 +521,7 @@ public class ReservationGUI extends JFrame {
         //listeners
         searchDateJButton.addActionListener(listener);
         searchByComboBox.addActionListener(listener);
-        searchDatabaseJButton.addActionListener(listener);
+        printButton.addActionListener(listener);
         yearJComboBox.addActionListener(listener);
         monthJComboBox.addActionListener(listener);
         backButton.addActionListener(listener);
@@ -532,18 +534,20 @@ public class ReservationGUI extends JFrame {
         searchControlPanel.add(Box.createGlue());
         searchControlPanel.add(comboLabel);
         searchControlPanel.add(searchByComboBox);
-//        searchControlPanel.add(comboLabel);
-//        searchControlPanel.add(searchByComboBox);
-        //searchControlPanel.add(innerControlPanel);
+        searchControlPanel.add(Box.createHorizontalStrut(140));
         searchControlPanel.add(Box.createGlue());
-        searchControlPanel.add(Box.createHorizontalStrut(200));
+        searchControlPanel.add(printButton);
+        searchControlPanel.add(Box.createHorizontalStrut(10));
+        //searchControlPanel.add(Box.createGlue());
+
+
         
         //set up search panel
         // This inner panel keeps the searchBar from exploding
         JPanel innerSearchPanel = new JPanel();
         innerSearchPanel.add(searchBarLabel);
         innerSearchPanel.add(searchBar);
-        innerSearchPanel.add(searchDatabaseJButton);
+//        innerSearchPanel.add(printButton);
         searchPanel.add(Box.createHorizontalStrut(100));
         //searchPanel.add(backButton);
         searchPanel.add(Box.createGlue());
@@ -597,11 +601,10 @@ public class ReservationGUI extends JFrame {
         searchBar = new JTextField(20);
         searchBar.setToolTipText("Search the database by name. Field"
                 + " automatically searches the database as you fill it out.");
-        searchBar.addActionListener(listener);
         searchBar.addCaretListener(textListener);
-        searchDatabaseJButton = new JButton("Search");
-        searchDatabaseJButton.setToolTipText("Click to search the database by"
-                + " the name indicated.");
+        printButton = new JButton("Print it!");
+        printButton.setToolTipText("Click to print whatever in the "
+                + "text area.");
         comboLabel = new JLabel("Search database by: ");
         searchByComboBox = new JComboBox(comboItems);
         searchByComboBox.setToolTipText("Switch between searching the"
@@ -628,6 +631,7 @@ public class ReservationGUI extends JFrame {
         reservationJList.setPrototypeCellValue("XXXXXXXXXXXXXXXX"
                 + "XXXXXX");
         reservationListPanel.add(listScroller);
+        
         
         //add to databasePanel
         databasePanel.add(searchingJPanel, BorderLayout.NORTH);
@@ -687,7 +691,7 @@ public class ReservationGUI extends JFrame {
     }
     
     /**
-     * the name says it all :)
+     * 
      * @param dateToBeSearched 
      */
     private void searchByArrDate(DateAD dateToBeSearched)
@@ -706,7 +710,7 @@ public class ReservationGUI extends JFrame {
     }
     
     /**
-     * Name says it all -_-
+     * 
      * @param dateToBeSearched 
      */
     private void searchByDepDate(DateAD dateToBeSearched)
