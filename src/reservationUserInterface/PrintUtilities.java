@@ -19,24 +19,31 @@ import java.awt.print.*;
  *  difference, so in most cases just do the simpler
  *  PrintUtilities.printComponent(componentToBePrinted).
  *
- *  7/99 Marty Hall, http://www.apl.jhu.edu/~hall/java/
- *  May be freely used or adapted.
  */
 
 public class PrintUtilities implements Printable
 {
   private Component componentToBePrinted;
 
+  /**
+   * initializes the print
+   * @param c component to be printed
+   */
   public static void printComponent(Component c)
   {
     new PrintUtilities(c).print();
   }
-  
+  /**
+   * Constructor to pass in component
+   * @param componentToBePrinted 
+   */
   public PrintUtilities(Component componentToBePrinted)
   {
     this.componentToBePrinted = componentToBePrinted;
   }
-  
+  /**
+   * Print the component passed into the constructor
+   */
   public void print() {
     PrinterJob printJob = PrinterJob.getPrinterJob();
     printJob.setPrintable(this);
@@ -48,6 +55,14 @@ public class PrintUtilities implements Printable
       }
   }
 
+  /**
+   * Print the page
+   * @param g
+   * @param pageFormat
+   * @param pageIndex
+   * @return boolean page exists or not
+   */
+  @Override
   public int print(Graphics g, PageFormat pageFormat, int pageIndex)
   {
     if (pageIndex > 0) {
