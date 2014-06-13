@@ -451,13 +451,9 @@ public class ReservationGUI extends JFrame {
         int size = max - min;
         
         
-<<<<<<< HEAD
-        backButton = new JButton("Show all"); 
-=======
         backButton = new JButton("Show all");
         backButton.setToolTipText("Display all reservations in"
                 + " the database.");
->>>>>>> 69493a6fdf922df66ac7b02eb0041580444027c6
         startDateJRadioButton = new JRadioButton("Start Date");
         startDateJRadioButton.setToolTipText("Change the search date"
                 + " option to start date.");
