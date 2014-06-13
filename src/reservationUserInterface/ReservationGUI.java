@@ -214,6 +214,8 @@ public class ReservationGUI extends JFrame {
                 // if user selects a different search method
                 if (event.getSource() == searchByComboBox)
                 {
+                    goBackPage();
+                    searchBar.setText("");
                     CardLayout c2 = (CardLayout) 
                             searchCardLayoutPanel.getLayout();
                     c2.show(searchCardLayoutPanel,
@@ -240,6 +242,11 @@ public class ReservationGUI extends JFrame {
                     DateAD today = new DateAD();
                     dayJComboBox.removeAllItems();
                     dayJComboBox.setModel(new DefaultComboBoxModel(getDaysInMonth(today)));
+                }
+                
+                if(startDateJRadioButton.isSelected() || endDateJRadioButton.isSelected())
+                {
+                    goBackPage();
                 }
                 
                 if(startDateJRadioButton.isSelected() && event.getSource() == searchDateJButton)
