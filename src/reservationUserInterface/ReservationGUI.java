@@ -30,11 +30,9 @@ import javax.swing.event.CaretListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-
-
 /**
  *
- * @author Weston
+ * @author 
  */
 public class ReservationGUI extends JFrame {
     
@@ -151,7 +149,6 @@ public class ReservationGUI extends JFrame {
             fileObject = new File(prefs.get("LAST_FILE", ""));
         }
         
-        
         /**
          * Class Action listener listens for all user input
          */
@@ -163,7 +160,6 @@ public class ReservationGUI extends JFrame {
                 //If user selection is load menu item
                 if(event.getSource() == load) //JMenu Item
                 {
-                    
                     JFileChooser chooser = new JFileChooser();
                     chooser.setCurrentDirectory(fileObject.getAbsoluteFile()
                         .getParentFile());
@@ -206,13 +202,13 @@ public class ReservationGUI extends JFrame {
                     }
                     databaseName.setText("Database: " + defaultFileName);
                     
-                    
                     fileObject = new File(defaultFileName);
                     
                     allReservations = Viewer.readDatabase(fileObject);
                     setArrays(allReservations);
                     reservationJList.setListData(listOfNamesToDisplay);
                 }
+                
                 // if user selects a different search method
                 if (event.getSource() == searchByComboBox)
                 {
@@ -223,6 +219,7 @@ public class ReservationGUI extends JFrame {
                     c2.show(searchCardLayoutPanel,
                             (String)searchByComboBox.getSelectedItem());
                 }
+                
                 //If user searches also searchDateJButton needs to be implemented
                 if(event.getSource() == printButton)
                 {
@@ -237,6 +234,7 @@ public class ReservationGUI extends JFrame {
                     goBackPage();
                     searchBar.setText("");
                 }
+                
                 /**
                  * If the user canges the year or month to search fo
                  */
@@ -275,20 +273,17 @@ public class ReservationGUI extends JFrame {
                     day += 1;  
                     DateAD endDate = new DateAD(day, month, year);
                     searchByDepDate(endDate);
-                    
                 }
-                
-                
             }
-            
         }
+        
         /**
          * Listener to determine if/what a user is typing in the 
          * search text field and find the names that starts with it
          * in the database
          */
-        class TextFieldListener implements CaretListener {
-
+        class TextFieldListener implements CaretListener
+        {
             @Override
             public void caretUpdate(CaretEvent e)
             {
@@ -343,9 +338,9 @@ public class ReservationGUI extends JFrame {
                         output += String.format("%n");
                     }
                 }
+                
                 reservationTextArea.setText(output);
-            }
-            
+            }  
         }
         
         
@@ -533,26 +528,21 @@ public class ReservationGUI extends JFrame {
         searchControlPanel.add(databaseName);
         searchControlPanel.add(Box.createHorizontalStrut(10));
         searchControlPanel.add(backButton);
-        searchControlPanel.add(Box.createHorizontalStrut(200));
+        searchControlPanel.add(Box.createHorizontalStrut(150));
         searchControlPanel.add(Box.createGlue());
         searchControlPanel.add(comboLabel);
         searchControlPanel.add(searchByComboBox);
-        searchControlPanel.add(Box.createHorizontalStrut(140));
+        searchControlPanel.add(Box.createHorizontalStrut(60));
         searchControlPanel.add(Box.createGlue());
         searchControlPanel.add(printButton);
         searchControlPanel.add(Box.createHorizontalStrut(10));
-        //searchControlPanel.add(Box.createGlue());
-
-
         
         //set up search panel
         // This inner panel keeps the searchBar from exploding
         JPanel innerSearchPanel = new JPanel();
         innerSearchPanel.add(searchBarLabel);
         innerSearchPanel.add(searchBar);
-//        innerSearchPanel.add(printButton);
         searchPanel.add(Box.createHorizontalStrut(100));
-        //searchPanel.add(backButton);
         searchPanel.add(Box.createGlue());
         searchPanel.add(innerSearchPanel);
         searchPanel.add(Box.createGlue());
@@ -576,6 +566,7 @@ public class ReservationGUI extends JFrame {
         searchingJPanel.add(searchControlPanel, BorderLayout.NORTH);
         searchingJPanel.add(searchCardLayoutPanel, BorderLayout.SOUTH);
     }
+    
     /**
      * Creates the reservation page that contains all Reservation displaying
      * boxes and such. 
@@ -679,12 +670,23 @@ public class ReservationGUI extends JFrame {
         allNames = Viewer.getNames(allReservations);
         
         allNamesInCaps = new String[allNames.length];
+        
         for (int i = 0; i < allNames.length; i++) 
         {
             allNamesInCaps[i] = allNames[i].toUpperCase();
         }
-        ReservationSort.quickSort(allNamesInCaps);
+        try
+        {
+            ReservationSort.quickSort(allNamesInCaps);
+        }
         
+        catch(ArrayIndexOutOfBoundsException e)
+        {
+            JOptionPane.showMessageDialog(null, "Cannot Open File");
+            // refresh
+            goBackPage();
+            return;
+        }
         allArrivals = Viewer.getArrivals(allReservations_SortByArrival);
         ReservationSort.quickSort(allArrivals);
         allDepartures = Viewer.getDepartures(allReservations_SortByDeparture);
@@ -700,16 +702,15 @@ public class ReservationGUI extends JFrame {
     private void searchByArrDate(DateAD dateToBeSearched)
     {
         Integer[] locations = BinarySearch.searchForAll(allArrivals, dateToBeSearched);
-         if(locations == null)
-                    {
-                        JOptionPane.showMessageDialog(null, "Search Not Found");
-                        goBackPage();
-                        return;
-                    }
-                    
-                    Reservation[] reservations = Viewer.getReservationsAtLocation(allReservations_SortByArrival, locations);
-                    setDisplayedNames(reservations);
+        if (locations == null) 
+        {
+            JOptionPane.showMessageDialog(null, "Search Not Found");
+            goBackPage();
+            return;
+        }
 
+        Reservation[] reservations = Viewer.getReservationsAtLocation(allReservations_SortByArrival, locations);
+        setDisplayedNames(reservations);
     }
     
     /**
@@ -728,7 +729,6 @@ public class ReservationGUI extends JFrame {
                     
                     Reservation[] reservations = Viewer.getReservationsAtLocation(allReservations_SortByDeparture, locations);
                     setDisplayedNames(reservations);
-    
     }
     
     /**

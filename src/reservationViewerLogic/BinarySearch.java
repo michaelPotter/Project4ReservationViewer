@@ -14,17 +14,6 @@ import java.util.Arrays;
  */
 public class BinarySearch
 {
-    public static void main(String[] args) {
-        String[] array = {"Alpha", "Alpha", "Alpha","Alpha","Bravo", "Bravo", "Bravo", "Charlie", "Delta"};
-        
-        int location = search(array, "Charlie");
-        System.out.println("Location: " + location);
-        
-        Integer[] locations = searchForAll(array, "Alpha");
-        for (int i : locations) {
-            System.out.print(i + ", ");
-        }
-    }
     /**
      * A static version of the binarySearch. Allows searching without creating a
      * BinarySearch Object.
@@ -37,7 +26,6 @@ public class BinarySearch
     public static int search(Comparable[] array, Comparable searchObject)
     {
         return searchFor(array, searchObject, 0, array.length);
-
     }
     
     /**
@@ -51,7 +39,8 @@ public class BinarySearch
     public static Integer[] searchForAll(Comparable[] array, Comparable searchObject) 
     {
         int generalLocation = search(array, searchObject);
-        if (generalLocation < 0) {
+        if (generalLocation < 0) 
+        {
             return null;
         }
         return findNear(array, searchObject, generalLocation);
@@ -94,7 +83,6 @@ public class BinarySearch
             {
                 return mid;
             }
-        
         }
     }
 
