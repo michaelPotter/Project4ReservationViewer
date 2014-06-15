@@ -87,7 +87,7 @@ public class ReservationGUI extends JFrame
     
         //reseration panels
     private JPanel searchingJPanel;
-    private JPanel searchControlPanel; //for date searching
+    private JPanel searchControlPanel; 
     private JPanel searchByComboPanel; //search by options
     private JPanel searchPanel; //search bar and button
     private JPanel reservationPanel; //holds reservations and label
@@ -496,6 +496,7 @@ public class ReservationGUI extends JFrame
         searchingJPanel = new JPanel(new BorderLayout());
         searchCardLayoutPanel = new JPanel(new CardLayout());
         searchControlPanel = new JPanel();
+        searchControlPanel.setBackground(TOP_COLOR);
         searchControlPanel.setLayout(
                 new BoxLayout(searchControlPanel, BoxLayout.X_AXIS));
         
@@ -519,7 +520,7 @@ public class ReservationGUI extends JFrame
         int size = max - min;
         
         
-        backButton = new JButton("Show all");
+        backButton = new JButton("Reset Search Results");
         backButton.setToolTipText("Display all reservations in"
                 + " the database.");
         startDateJRadioButton = new JRadioButton("Start Date");
@@ -590,24 +591,30 @@ public class ReservationGUI extends JFrame
         backButton.addActionListener(listener);
         
         //set up search control panel
+        JPanel innerControlPanel = new JPanel();
+        innerControlPanel.add(comboLabel);
+        innerControlPanel.add(searchByComboBox);
+        innerControlPanel.setBackground(TOP_COLOR);
+        searchControlPanel.add(Box.createHorizontalStrut(STRUT_SIZE));
         searchControlPanel.add(databaseName);
-        searchControlPanel.add(Box.createHorizontalStrut(TEN));
+//        searchControlPanel.add(Box.createHorizontalStrut(TEN));
         searchControlPanel.add(backButton);
-        searchControlPanel.add(Box.createHorizontalStrut(ONE_FIFTY));
+//        searchControlPanel.add(Box.createHorizontalStrut(ONE_FIFTY));
         searchControlPanel.add(Box.createGlue());
-        searchControlPanel.add(comboLabel);
-        searchControlPanel.add(searchByComboBox);
-        searchControlPanel.add(Box.createHorizontalStrut(SIXTY));
+        searchControlPanel.add(innerControlPanel);
+//        searchControlPanel.add(comboLabel);
+//        searchControlPanel.add(searchByComboBox);
+//        searchControlPanel.add(Box.createHorizontalStrut(SIXTY));
         searchControlPanel.add(Box.createGlue());
         searchControlPanel.add(printButton);
-        searchControlPanel.add(Box.createHorizontalStrut(TEN));
+        searchControlPanel.add(Box.createHorizontalStrut(STRUT_SIZE));
         
         //set up search panel
         // This inner panel keeps the searchBar from exploding
         JPanel innerSearchPanel = new JPanel();
+        innerSearchPanel.setBackground(BOTTOM_COLOR);
         innerSearchPanel.add(searchBarLabel);
         innerSearchPanel.add(searchBar);
-        searchPanel.add(Box.createHorizontalStrut(ONE_HUNDRED));
         searchPanel.add(Box.createGlue());
         searchPanel.add(innerSearchPanel);
         searchPanel.add(Box.createGlue());
@@ -643,7 +650,9 @@ public class ReservationGUI extends JFrame
         searchByComboPanel = new JPanel();
         searchByComboPanel.setBorder(BorderFactory.createLineBorder(
                 Color.black, 1, true));
+        searchByComboPanel.setBackground(BOTTOM_COLOR);
         searchPanel = new JPanel(); 
+        searchPanel.setBackground(BOTTOM_COLOR);
         searchPanel.setLayout(new BoxLayout(searchPanel,
                 BoxLayout.X_AXIS));
         searchPanel.setBorder(BorderFactory
@@ -659,7 +668,7 @@ public class ReservationGUI extends JFrame
         reservationListPanel.setBorder(BorderFactory.createLineBorder(
                 Color.black,
                 1, true));
-        reservationListPanel.setLayout(new GridLayout());
+        reservationListPanel.setLayout(new BorderLayout());
         
         String comboItems[] = {"Name","Date"};
         
@@ -700,6 +709,7 @@ public class ReservationGUI extends JFrame
         reservationJList.setPrototypeCellValue("XXXXXXXXXXXXXXXX"
                 + "XXXXXX");
         reservationListPanel.add(listScroller);
+        reservationListPanel.add(backButton, BorderLayout.SOUTH);
         
         
         //add to databasePanel
@@ -855,8 +865,7 @@ public class ReservationGUI extends JFrame
     private static final int FOURTEEN = 14;
     private static final int FRAME_HEIGHT = 400;
     private static final int FRAME_WIDTH = 800;
-    private static final int TEN = 10;
-    private static final int ONE_FIFTY = 150;
-    private static final int ONE_HUNDRED = 100;
-    private static final int SIXTY = 60;
+    private static final int STRUT_SIZE = 5;
+    private static final Color TOP_COLOR = new Color(0x94B4A9);
+    private static final Color BOTTOM_COLOR = new Color(0xC5E4DA);
 }
