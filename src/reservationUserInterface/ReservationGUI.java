@@ -143,7 +143,7 @@ public class ReservationGUI extends JFrame
         fileObject = null;
         fileObject = new File(prefs.get("LAST_FILE", ""));
 
-        if (!(defaultFileObject.exists()))
+        if (!(defaultFileObject.exists()) && !(fileObject.exists()))
         {
             JOptionPane.showMessageDialog(null, "No default database.");
         }
