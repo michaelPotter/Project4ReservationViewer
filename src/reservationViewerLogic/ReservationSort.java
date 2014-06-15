@@ -1,9 +1,16 @@
-/*
- * ReservationSort.java
- */
-
 package reservationViewerLogic;
-
+/**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+* <pre>
+* Class: ReservationSort
+* File: ReservationSort.java
+* Description: Class for sorting arrays passed in as Reservations.
+* @author: Weston, Michael, Vincent
+* Environment: PC, Windows 7, Windows 8, NetBeans 7.4
+* Date: 6.15.2014
+* @version 2.0
+* @see javax.swing.JFrame
+* </pre>
+*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 import filesort.Reservation;
 import Calendar.DateAD;
 
@@ -134,14 +141,15 @@ public class ReservationSort
     }
     
     /**
-     * It will call the partition method and recursively call itself until it
-     * the elements sorted are less than 4, then it is going to sort them
-     * by insertion sort
+     * It will call the partition method and recursively call itself
+     * until it the elements sorted are less than 4, then it is going
+     * to sort them by insertion sort
      * 
      * @param array a Comparable array which will be sorted
      * @param from the starting index
      * @param to the end index of the array
-     * @throws java.lang.ArrayIndexOutOfBoundsException if indices not in array
+     * @throws java.lang.ArrayIndexOutOfBoundsException if indices not
+     * in array
      */
     public static void quickSort(Comparable[] array, int from, int to)
             throws java.lang.ArrayIndexOutOfBoundsException
@@ -161,10 +169,12 @@ public class ReservationSort
     /**
      * It will sort the comparable array using insertion sort
      * 
-     * @param array A comparable array which will be sorted by insertion sort
+     * @param array A comparable array which will be sorted by
+     * insertion sort
      * @param from  The starting index of the array
      * @param to    the end index of the array
-     * @throws java.lang.ArrayIndexOutOfBoundsException if indeces not in array
+     * @throws java.lang.ArrayIndexOutOfBoundsException if indeces
+     * not in array
      */
     public static void insertionSort(Comparable[] array, int from, int to)
             throws java.lang.ArrayIndexOutOfBoundsException 
@@ -188,14 +198,15 @@ public class ReservationSort
     }
     
     /**
-     * It will first sort middle first and last of the array, moves data around
-     * the pivot value, and returns pivot index.
+     * It will first sort middle first and last of the array,
+     * moves data around the pivot value, and returns pivot index.
      * 
      * @param array A comparable array to be called in partition
      * @param from The starting index of the array
      * @param to the last index of the array
      * @return returns the pivot index after being partitioned
-     * @throws java.lang.ArrayIndexOutOfBoundsException if indeces not in array
+     * @throws java.lang.ArrayIndexOutOfBoundsException if indeces
+     * not in array
      */
     private static int partition(Comparable[] array, int from, int to)
             throws java.lang.ArrayIndexOutOfBoundsException 
@@ -241,11 +252,13 @@ public class ReservationSort
     /**
      * It will swap two elements inside the array
      * 
-     * @param array A comparable array that two elements of them will be swapped
+     * @param array A comparable array that two elements of them
+     * will be swapped
      * @param from The first element that later be swapped with the second 
      *              element
      * @param to The second element to be swapped with the first one.
-     * @throws java.lang.ArrayIndexOutOfBoundsException if indices not in array
+     * @throws java.lang.ArrayIndexOutOfBoundsException if indices
+     * not in array
      */
     private static void swap(Comparable[] array, int from, int to)
             throws java.lang.ArrayIndexOutOfBoundsException 
@@ -260,12 +273,13 @@ public class ReservationSort
     /**
      * It will sort the first, middle and last elements inside the array
      * 
-     * @param array A comparable array that its first, middle and last will be 
-     *              sorted 
+     * @param array A comparable array that its first, middle and last
+     * will be sorted 
      * @param from The first index of the array
      * @param mid the middle index of the array
      * @param to the last index of the array
-     * @throws java.lang.ArrayIndexOutOfBoundsException if indeces not in array 
+     * @throws java.lang.ArrayIndexOutOfBoundsException if indeces not
+     * in array 
      */
     private static void sortFirstMiddleLast(Comparable[] array, int from, 
             int mid, int to) throws java.lang.ArrayIndexOutOfBoundsException
