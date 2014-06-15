@@ -591,23 +591,23 @@ public class ReservationGUI extends JFrame
         
         //set up search control panel
         searchControlPanel.add(databaseName);
-        searchControlPanel.add(Box.createHorizontalStrut(10));
+        searchControlPanel.add(Box.createHorizontalStrut(TEN));
         searchControlPanel.add(backButton);
-        searchControlPanel.add(Box.createHorizontalStrut(150));
+        searchControlPanel.add(Box.createHorizontalStrut(ONE_FIFTY));
         searchControlPanel.add(Box.createGlue());
         searchControlPanel.add(comboLabel);
         searchControlPanel.add(searchByComboBox);
-        searchControlPanel.add(Box.createHorizontalStrut(60));
+        searchControlPanel.add(Box.createHorizontalStrut(SIXTY));
         searchControlPanel.add(Box.createGlue());
         searchControlPanel.add(printButton);
-        searchControlPanel.add(Box.createHorizontalStrut(10));
+        searchControlPanel.add(Box.createHorizontalStrut(TEN));
         
         //set up search panel
         // This inner panel keeps the searchBar from exploding
         JPanel innerSearchPanel = new JPanel();
         innerSearchPanel.add(searchBarLabel);
         innerSearchPanel.add(searchBar);
-        searchPanel.add(Box.createHorizontalStrut(100));
+        searchPanel.add(Box.createHorizontalStrut(ONE_HUNDRED));
         searchPanel.add(Box.createGlue());
         searchPanel.add(innerSearchPanel);
         searchPanel.add(Box.createGlue());
@@ -685,7 +685,7 @@ public class ReservationGUI extends JFrame
         reservationTextArea.setToolTipText("Reservation info is displayed"
                 + " here. Click a name on the left to view details!");
         reservationTextArea.setEditable(false);
-        reservationTextArea.setFont(new Font("Courier", Font.PLAIN, 14));
+        reservationTextArea.setFont(new Font("Courier", Font.PLAIN, FOURTEEN));
         JScrollPane textScroller = new JScrollPane(reservationTextArea);
         reservationPanel.add(textScroller);
         //set up reservationlist panel
@@ -852,7 +852,11 @@ public class ReservationGUI extends JFrame
     private static final int UP_TO_TEN_YEARS = 10;
     private static final int MIN_YEARS_AGO = 2;
     private static final int TEXT_FIELD_SIZE = 20;
-    
+    private static final int FOURTEEN = 14;
     private static final int FRAME_HEIGHT = 400;
     private static final int FRAME_WIDTH = 800;
+    private static final int TEN = 10;
+    private static final int ONE_FIFTY = 150;
+    private static final int ONE_HUNDRED = 100;
+    private static final int SIXTY = 60;
 }
