@@ -57,7 +57,9 @@ public class Viewer {
 		ArrayList<Reservation> searchResults =
                         new ArrayList<Reservation>();
 
-		for (int i = 0; i < TWO; i++) {
+
+		for (int i = 0; i < TWO; i++) 
+                {
 			int j = generalLocation - i;
 			boolean stillSearching = true;
 

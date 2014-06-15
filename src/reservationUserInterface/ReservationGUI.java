@@ -1,7 +1,6 @@
 /**
  * ReservationGUI.java
  */
-
 package reservationUserInterface;
 
 /**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -48,6 +47,7 @@ import javax.swing.event.ListSelectionListener;
  * Main class for ReservationGUI extends JFrame handles entire UI
  * @author Weston, Michael, Vincent
  */
+
 public class ReservationGUI extends JFrame 
 {
     private static JFrame reservationFrame;
@@ -372,7 +372,7 @@ public class ReservationGUI extends JFrame
             }
             
         }
-        
+
         /**
          * Listener class for the list menu which contains all reservations
          */

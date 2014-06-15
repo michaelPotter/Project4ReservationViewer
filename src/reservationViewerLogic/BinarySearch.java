@@ -3,6 +3,11 @@
  */
 
 package reservationViewerLogic;
+
+import hotelBooking.Sorts;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 * <pre>
 * Class: BinarySearch
@@ -16,20 +21,7 @@ package reservationViewerLogic;
 * @see javax.swing.JFrame
 * </pre>
 *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-import hotelBooking.Sorts;
-import java.util.ArrayList;
-import java.util.Arrays;
 
-/**
- * A class for searching through an array of Comparables.
- * Methods for returning many results which meet a certain
- * search criteria still need to be implemented
- * @author: Weston, Michael, Vincent
- * Environment: PC, Windows 7, Windows 8, NetBeans 7.4
- * Date: 6.15.2014
- * @version 2.0
- *
- */
 public class BinarySearch
 {
     /**
@@ -136,9 +128,9 @@ public class BinarySearch
             {
                 if (array[j].equals(searchObject))
                 {
-                    
-                    if (j == 0 || j == array.length - 1) 
+                    if (j == 0 || j == array.length - 1)
                         stillSearching = false;
+                    
                     indexList.add(j);
                     if (i == 0)
                         j++;
