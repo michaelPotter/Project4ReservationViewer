@@ -1,12 +1,5 @@
 package reservationUserInterface;
 
-/**
- * SUMMARY OF CHANGES,
- * ALLOW SEARCH BY DATES
- * IF SEARCH IS NOT FOUND, CALL GOBACKTOPAGE METHOD
- * MOVED SHOW ALL BUTTON, SO THAT BOTH SEARCH BY NAMES AND DATES PANEL CAN PRESS IT
- */
-
 import java.awt.BorderLayout;
 import java.awt.print.*;
 import java.awt.CardLayout;
@@ -558,7 +551,6 @@ public class ReservationGUI extends JFrame {
         searchByComboPanel.add(searchDateJButton);
         searchByComboPanel.add(startDateJRadioButton);
         searchByComboPanel.add(endDateJRadioButton);
-
         
         searchCardLayoutPanel.add(searchPanel, "Name");
         searchCardLayoutPanel.add(searchByComboPanel, "Date");
