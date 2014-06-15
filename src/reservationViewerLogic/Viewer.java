@@ -1,32 +1,42 @@
-package reservationViewerLogic;
+/**
+ * Viewer.java
+ */
 
+package reservationViewerLogic;
+/**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+* <pre>
+* Class: Viewer
+* File: Viewer.java
+* Description: Helper class for ReservationGUI for IO, and Reservaiton
+* manipulation. Handles reading, and finding as well as other
+* Reservation database hadling.
+* @author: Weston, Michael, Vincent
+* Environment: PC, Windows 7, Windows 8, NetBeans 7.4
+* Date: 6.15.2014
+* @version 2.0
+* </pre>
+*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 import hotelBooking.FileSort;
 import filesort.Reservation;
 import hotelBooking.Sorts;
 import Calendar.*;
 
-import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Scanner;
 
 /**
  * This class contains the logic behind the gui reservation viewer program.
  * Should include methods that will be useable in the gui version of 
  * the program such as methods to read from a database and/or process the 
- * information obtained there. The main method of this class contains a 
- * command line version of this program, however, it is no longer up to date.
+ * information obtained there.
  * @author Michael
  */
 public class Viewer {
-  
 
-    // This method will probably not be used since it makes more sense to 
-    // read the database once, create a Reservation[] and search from that.
     /**
      * Given a database and a searchTerm, this method will return the search 
      * results. This method will utilize the Search Class so that it does not 
@@ -36,29 +46,35 @@ public class Viewer {
      * @param containSearch whether to search in whole or containing 
      * @return an array of reservations that met the search parameters
      */
-    
 	public static Reservation[] findReservations(File database,
 			String searchTerm, boolean containSearch) {
 		Reservation[] allReservations = readDatabase(database);
                 System.out.println(allReservations);
 		String[] reservationNames = getNames(allReservations);
-		int generalLocation = reservationViewerLogic.BinarySearch.search(
+		int generalLocation = reservationViewerLogic
+                        .BinarySearch.search(
 				reservationNames, searchTerm);
-		ArrayList<Reservation> searchResults = new ArrayList<Reservation>();
+		ArrayList<Reservation> searchResults =
+                        new ArrayList<Reservation>();
 
-		// for (int i = generalLocation; i < reservationNames.length; i++) {
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < TWO; i++) {
 			int j = generalLocation - i;
 			boolean stillSearching = true;
 
 			while (stillSearching) {
 				boolean isValidReservation = false;
-				boolean isEquals = reservationNames[j].equals(searchTerm);
-				boolean doesContain = reservationNames[j].contains(searchTerm);
+				boolean isEquals =
+                                        reservationNames[j]
+                                                .equals(searchTerm);
+				boolean doesContain = 
+                                        reservationNames[j]
+                                                .contains(searchTerm);
 
-				isValidReservation = isEquals || (doesContain && containSearch);
+				isValidReservation = isEquals ||
+                                        (doesContain && containSearch);
 				if (isValidReservation) {
-					searchResults.add(allReservations[j]);
+					searchResults
+                                                .add(allReservations[j]);
 					if (i == 0)
 						j++;
 					else
@@ -74,12 +90,16 @@ public class Viewer {
 		Sorts.quickSort(searchResultsArray);
 		return searchResultsArray;
 	}
-    
-        
-        
+        /**
+         * IO method for reading in all reservations in a database
+         * file
+         * @param database the database file to read in
+         * @return reservationArray an array of all reservations
+         */
         public static Reservation[] readDatabase(File database) 
         {
-            ArrayList<Reservation> reservationArrayList = new ArrayList<>();
+            ArrayList<Reservation> reservationArrayList =
+                    new ArrayList<>();
             Reservation[] reservationArray;
             
             try
@@ -87,8 +107,7 @@ public class Viewer {
                 FileInputStream fis = new FileInputStream(database);
                 ObjectInputStream ois = new ObjectInputStream(fis);
 
-                //Read the number of Reservation objects inside the file, which 
-                // is informed from previous call of the program.
+                //Read the number of Reservation objects inside the file
                 int j = ois.readInt();
                 for(int i = 0; i < j; i++)
                 {
@@ -103,57 +122,12 @@ public class Viewer {
             reservationArrayList.toArray(reservationArray);
             return reservationArray;
         }
-        
-        
     /**
-     * Reads a database of Reservations. 
-     * @param database the file containing the object data
-     * @return the list of reservations read from the file
-     */
-        
-        
-        
-        /**
-	public static Reservation[] readDatabase(File database) {
-		if (database.exists() && database.canRead()) {
-			FileInputStream fileInputStream = null;
-			ArrayList<Reservation> reservationList = new ArrayList<Reservation>();
-			try {
-				fileInputStream = new FileInputStream(database);
-				ObjectInputStream objectInputStream = new ObjectInputStream(
-						fileInputStream);
-				try {
-					while (true) {
-						Object object = objectInputStream.readObject();
-						if (object.getClass().equals(Reservation.class)) {
-							Reservation res = (Reservation) object;
-							reservationList.add(res);
-						}
-					}
-				} catch (EOFException e) {
-					// end of file
-				} catch (Exception e) {
-					// other exceptions.
-					e.printStackTrace();
-				}
-
-			} catch (IOException e) {
-				// but it's not going to happen
-				e.printStackTrace();
-			}
-			Reservation[] reservationArray = reservationList
-					.toArray(new Reservation[0]);
-			return reservationArray;
-		} else
-			return null;
-	}
-        * /
-
-    /**
-     * Returns an array of Strings containing the names of Reservations in the 
-     * given array
+     * Returns an array of Strings containing the names of Reservations
+     * in the given array
      * @param array the array of names
-     * @return the array to read from
+     * @return arrayOfNames array containing all names in the array
+     * passed in
      */
 	public static String[] getNames(Reservation[] array) {
 		ArrayList<String> listOfNames = new ArrayList<String>();
@@ -164,43 +138,53 @@ public class Viewer {
 		return arrayOfNames;
 
 	}
-    public static DateAD[] getArrivals(Reservation[] array) {
+        /**
+         * Returns the arrival times of the Reservation array
+         * @param array array of type reservation arrival times
+         * @return arrivalArray standard array of arrival times
+         */
+         public static DateAD[] getArrivals(Reservation[] array) {
 		ArrayList<DateAD> listOfArrivals = new ArrayList<>();
 		for (Reservation reservation : array) {
 			listOfArrivals.add(reservation.getArrivalDate());
 		}
-		DateAD[] arrivalArray = listOfArrivals.toArray(new DateAD[0]);
+		DateAD[] arrivalArray = listOfArrivals
+                        .toArray(new DateAD[0]);
 		return arrivalArray;
 
 	}
-    
-    public static DateAD[] getDepartures(Reservation[] array) {
+        /**
+        * Returns  the departure times of the Reservation array
+        * @param array array of type reservation departure times
+        * @return departureArray standard array of departure times
+        */
+        public static DateAD[] getDepartures(Reservation[] array) {
 		ArrayList<DateAD> listOfDepartures = new ArrayList<>();
 		for (Reservation reservation : array) {
-			listOfDepartures.add(reservation.getDepartureDate());
+			listOfDepartures.add(
+                                reservation.getDepartureDate());
 		}
-		DateAD[] departureArray = listOfDepartures.toArray(new DateAD[0]);
+		DateAD[] departureArray = listOfDepartures.toArray(
+                        new DateAD[0]);
 		return departureArray;
 
 	}
     
-    /**
-     * Shows a fileChooser and returns the file selected by the user. This 
-     * method is just a redirection of the FileSort.pickFile(), but this is 
-     * done to simplify method calls so that all of the program logic is called 
-     * from a dedicated logic class
-     * @return The file chosen by the user
-     */
-    public static File pickFile() {
+        /**
+        * Shows a fileChooser and returns the file selected by
+        * the user. This method is just a redirection of the 
+        * FileSort.pickFile(), but this is done to simplify method
+        * calls so that all of the program logic is called 
+        * from a dedicated logic class
+        * @return database The file chosen by the user
+        */
+        public static File pickFile() {
                File database = FileSort.pickFile();
                return database;
-}
-    
-    // This method may be incorrect or no longer necessary
-    
+        }
     /**
-     * Searches for a default database in the directory from which the program 
-     * is run
+     * Searches for a default database in the directory from which
+     * the program is to run
      * @return the file found to be a "default" database 
      */
     public static File findDefaultDatabase() {
@@ -210,7 +194,11 @@ public class Viewer {
         else 
             return null;
     }
-    
+    /**
+     * Method to removed duplicate items in an array
+     * @param array String[] array containing strings
+     * @return arrayNoDuplicates String[] array with duplicates removed
+     */
     public static String[] removeDuplicates(String[] array) {
         int i = 0;
         ArrayList<String> list = new ArrayList<>(Arrays.asList(array));
@@ -224,8 +212,14 @@ public class Viewer {
         String[] arrayNoDuplicates = list.toArray(new String[0]);
         return arrayNoDuplicates;
     }
-    
-    public static Reservation[] getReservationsAtLocation(Reservation[] reservations, Integer[] locations)
+    /**
+     * Method to get the reservation info of an individual user.
+     * @param reservations array of Reservations
+     * @param locations index locations of database info
+     * @return results Reservation[] array of reservations matching location
+     */
+    public static Reservation[] getReservationsAtLocation(
+            Reservation[] reservations, Integer[] locations)
     {
         
         ArrayList<Reservation> list = new ArrayList<> ();
@@ -236,5 +230,6 @@ public class Viewer {
         return results;
     }
     
+    private static final int TWO = 2;
     
 }

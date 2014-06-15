@@ -1,26 +1,23 @@
+/**
+ * PrintUtilities.java
+ */
 package reservationUserInterface;
 
 import java.awt.*;
 import javax.swing.*;
 import java.awt.print.*;
 
-/** A simple utility class that lets you very simply print
- *  an arbitrary component. Just pass the component to the
- *  PrintUtilities.printComponent. The component you want to
- *  print doesn't need a print method and doesn't have to
- *  implement any interface or do anything special at all.
- *  <P>
- *  If you are going to be printing many times, it is marginally more 
- *  efficient to first do the following:
- *  <PRE>
- *    PrintUtilities printHelper = new PrintUtilities(theComponent);
- *  </PRE>
- *  then later do printHelper.print(). But this is a very tiny
- *  difference, so in most cases just do the simpler
- *  PrintUtilities.printComponent(componentToBePrinted).
- *
- */
-
+/**~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+* <pre>
+* Class: PrintUtilities
+* Description: A simple utility class that lets you very simply print
+*  an arbitrary component.
+* @author: Weston, Michael, Vincent
+* Environment: PC, Windows 7, Windows 8, NetBeans 7.4
+* Date: 6.15.2014
+* @version 2.0
+* </pre>
+*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 public class PrintUtilities implements Printable
 {
   private Component componentToBePrinted;
@@ -35,12 +32,13 @@ public class PrintUtilities implements Printable
   }
   /**
    * Constructor to pass in component
-   * @param componentToBePrinted 
+   * @param componentToBePrinted the component to be printed
    */
   public PrintUtilities(Component componentToBePrinted)
   {
     this.componentToBePrinted = componentToBePrinted;
   }
+  
   /**
    * Print the component passed into the constructor
    */
@@ -57,9 +55,9 @@ public class PrintUtilities implements Printable
 
   /**
    * Print the page
-   * @param g
-   * @param pageFormat
-   * @param pageIndex
+   * @param g the graphic for the print.
+   * @param pageFormat the page format of the printing preference
+   * @param pageIndex An integer telling the index of the page
    * @return boolean page exists or not
    */
   @Override
@@ -77,8 +75,10 @@ public class PrintUtilities implements Printable
     }
   }
 
-  /** The speed and quality of printing suffers dramatically if
+  /** 
+   *  The speed and quality of printing suffers dramatically if
    *  any of the containers have double buffering turned on.
+   *  @param c A component parameter
    *  So this turns if off globally.
    *  @see enableDoubleBuffering
    */
@@ -87,8 +87,11 @@ public class PrintUtilities implements Printable
     currentManager.setDoubleBufferingEnabled(false);
   }
 
-  /** Re-enables double buffering globally. */
   
+  /**
+   * Re-enables double buffering globally. 
+   * @param c A component parameter
+   */
   public static void enableDoubleBuffering(Component c) {
     RepaintManager currentManager = RepaintManager.currentManager(c);
     currentManager.setDoubleBufferingEnabled(true);
